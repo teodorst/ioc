@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="horizontal"
+    tools:context="com.example.ioc.evshare.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/linearLayoutCompat"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="5">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:src="@drawable/evshare_logo_rsz"
+            android:layout_weight="1.5"
+            android:id="@+id/imageView" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3.5"
+            android:orientation="vertical"
+            android:gravity="center|top">
+
+            <EditText
+                android:id="@+id/login_activity_email_input"
+                android:layout_width="@dimen/activity_login_input_field_width"
+                android:layout_height="@dimen/activity_login_input_field_height"
+                android:maxLines="1"
+                android:inputType="textEmailAddress"
+                android:text="Salutare@gmail.com"
+                android:textAlignment="center"
+                android:background="@drawable/login_activity_input_field_background"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/login_activity_password_input"
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="20dp"
+                />
+
+            <EditText
+                android:id="@+id/login_activity_password_input"
+                android:layout_width="@dimen/activity_login_input_field_width"
+                android:layout_height="@dimen/activity_login_input_field_height"
+                android:maxLines="1"
+                android:inputType="textPassword"
+                android:text="password"
+                android:textAlignment="center"
+                android:background="@drawable/login_activity_input_field_background"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="30dp"
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                android:layout_marginBottom="20dp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                >
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Google"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginLeft="30dp"
+
+                    />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Facebook"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    />
+
+
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:layout_marginTop="20dp"
+                android:text="Don't have an account yet ?\n\t Register now"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

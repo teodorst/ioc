@@ -10,4 +10,16 @@ public class Event {
 	private List<User> participants;
 	
 	private final static Logger LOGGER = Logger.getLogger(Event.class.getName());
+
+	public String getId() {
+		return id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public List<User> getParticipants() {
+		return participants;
+	}
 }

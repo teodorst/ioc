@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-	private final static Logger LOGGER = Logger.getLogger(UserController.class.getName());	
+	private final static Logger LOGGER = Logger.getLogger(UserController.class.getName());
+	public int testVar = 10;
 
     @RequestMapping(value = "/auth", method = RequestMethod.POST)
     public String authenticate(@RequestBody Map<String, Object> payload) {

@@ -14,6 +14,11 @@ sudo apt-get install mysql-server
 mysql -u root -p
 ```
 
+You have to initially create the database:
+```
+create database evshare;
+```
+
 To run the server:
 ```
 mvn clean install
@@ -28,6 +33,11 @@ curl -H "Accept: application/json" -H "Content-type: application/json" -X POST -
 To test the server user register:
 ```
 curl -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"email":"teodorstefu@gmail.com","firstName":"Teodor","lastName":"Stefu","password":"sugchec"}' http://localhost:8080/user/register
+```
+
+To test the server user get details:
+```
+curl http://localhost:8080/user?id=teodorstefu@gmail.com
 ```
 
 To test the server event creation:

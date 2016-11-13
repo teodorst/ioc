@@ -20,9 +20,30 @@ public class UserController extends Controller {
 	
     @RequestMapping(value = "/auth", method = RequestMethod.POST)
     public String authenticate(@RequestBody Map<String, Object> payload) {
-        //TODO
+
+    	String email = (String)payload.get("email");
+    	String password = (String)payload.get("password");
     	
-    	LOGGER.log(Level.INFO, (String)payload.get("email") + " attempts to login");
+    	Connection connection = getConnection();
+    	try {
+    		String insertUserString = "select * from users where email = ? and password = ?;";
+    		PreparedStatement preparedStatement = connection.prepareStatement(insertUserString);
+    		preparedStatement.setString(1, email);
+    		preparedStatement.setString(2, password);
+    		
+	    	LOGGER.log(Level.INFO, email + " attempting to authenticate");
+    		ResultSet rs = preparedStatement.executeQuery();
+    		boolean isAuth = rs.next();
+    		
+    		if (isAuth)
+    	    	LOGGER.log(Level.INFO, email + " logged in");
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	closeConnection(connection);
+    	
+    	//TODO: return token
     	return null;
     }
     
@@ -45,22 +66,44 @@ public class UserController extends Controller {
     		preparedStatement.setString(4, password);
     		
     		preparedStatement.execute();
+        	LOGGER.log(Level.INFO, "Registered user with: " + email + " " + firstName + " " + lastName);
     	}
     	catch (Exception e) {
     		e.printStackTrace();
     	}
     	closeConnection(connection);
 		
-    	LOGGER.log(Level.INFO, "Registered user with: " + email + " " + firstName + " " + lastName);
     	return email;
     }
     
     @RequestMapping(value = "/user")
     public User getUserDetails(@RequestParam(value = "id") String id) {
-    	//TODO
     	
-    	LOGGER.log(Level.INFO, "Getting details for user " + id);
-    	return null;
+    	String email = null, firstName = null, lastName = null, profilePictureUrl = null;
+    	Connection connection = getConnection();
+    	try {
+    		String insertUserString = "select * from users where email = ?;";
+    		PreparedStatement preparedStatement = connection.prepareStatement(insertUserString);
+    		preparedStatement.setString(1, id);
+    		
+	    	LOGGER.log(Level.INFO, "Searching details for user: " + id);
+    		ResultSet rs = preparedStatement.executeQuery();
+    		while (rs.next()) {
+    			email = rs.getString("email");
+    			firstName = rs.getString("firstName");
+    			lastName = rs.getString("lastName");
+    			//TODO: will we include this in the users table?
+    			//profilePictureUrl = rs.getString("profilePictureUrl");
+    		}
+    		
+    		LOGGER.log(Level.INFO, "Got details for user " + id);
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	closeConnection(connection);
+    	
+    	return new User(firstName, lastName, email, profilePictureUrl);
     }
     
     @RequestMapping(value = "/users")

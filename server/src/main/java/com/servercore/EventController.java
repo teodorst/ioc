@@ -35,13 +35,13 @@ public class EventController extends Controller {
     		preparedStatement.setString(4, date);
     		
     		preparedStatement.execute();
+    		LOGGER.log(Level.INFO, "Creating event: " + name + " at " + location + " on " + date);
     	}
     	catch (Exception e) {
     		e.printStackTrace();
     	}
     	closeConnection(connection);
 		
-		LOGGER.log(Level.INFO, "Creating event: " + name + " at " + location + " on " + date);
 		return Long.toString(id);
 	}
 }

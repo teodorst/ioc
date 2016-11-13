@@ -35,9 +35,7 @@ public class ServerMain {
 					"jdbc:mysql://localhost:3306/evshare", "root", "test");
 			statement = connection.createStatement();
 			
-			//TODO: remove after testing is done
-			if (TESTING)
-				dropTables(statement);
+			dropTables(statement);
 		
 			LOGGER.log(Level.INFO, "Creating the users table.");
 			String createTableUsers = "create table users " +
@@ -50,10 +48,10 @@ public class ServerMain {
 			
 			LOGGER.log(Level.INFO, "Creating the events table.");
 			String createTableEvents = "create table events " +
-						"(id INTEGER not NULL, " +
+						"(id INTEGER, " +
 						" name VARCHAR(255), " + 
 						" location VARCHAR(255), " + 
-						" date DATETIME, " + 
+						" date VARCHAR(255), " + 
 						" PRIMARY KEY (id))";		
 			statement.executeUpdate(createTableEvents);
 			
@@ -70,14 +68,16 @@ public class ServerMain {
 
 	public static void main(String[] args) {
 		
-		initDatabase();
+		//TODO: Remove after testing is done
+		if (TESTING)
+			initDatabase();
 		SpringApplication.run(ServerMain.class, args);
 		
-		ApplicationContext ctx = 
+		/*ApplicationContext ctx = 
 				   new AnnotationConfigApplicationContext(ServerBeanConfig.class);
 		
 		UserController userCtrl = ctx.getBean(UserController.class);
-		System.out.println(userCtrl.testVar);
+		System.out.println(userCtrl.testVar);*/
 	}
 
 }

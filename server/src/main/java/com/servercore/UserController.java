@@ -1,11 +1,14 @@
 package com.servercore;
 
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.*;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,24 +27,14 @@ public class UserController extends Controller {
     	String email = (String)payload.get("email");
     	String password = (String)payload.get("password");
     	
-    	Connection connection = getConnection();
-    	try {
-    		String insertUserString = "select * from users where email = ? and password = ?;";
-    		PreparedStatement preparedStatement = connection.prepareStatement(insertUserString);
-    		preparedStatement.setString(1, email);
-    		preparedStatement.setString(2, password);
+    	ApplicationContext ctx = 
+				   new AnnotationConfigApplicationContext(ServerBeanConfig.class);
+		MysqlDAO mysqlDAO = ctx.getBean(MysqlDAO.class);
+    	
+		boolean isAuth = mysqlDAO.checkUserExistence(email, password);
     		
-	    	LOGGER.log(Level.INFO, email + " attempting to authenticate");
-    		ResultSet rs = preparedStatement.executeQuery();
-    		boolean isAuth = rs.next();
-    		
-    		if (isAuth)
-    	    	LOGGER.log(Level.INFO, email + " logged in");
-    	}
-    	catch (Exception e) {
-    		e.printStackTrace();
-    	}
-    	closeConnection(connection);
+		if (isAuth)
+	    	LOGGER.log(Level.INFO, email + " logged in");
     	
     	//TODO: return token
     	return null;
@@ -55,55 +48,25 @@ public class UserController extends Controller {
     	String lastName = (String)payload.get("lastName");
     	String password = (String)payload.get("password");
     	
-    	Connection connection = getConnection();
-    	try {
-    		String insertUserString = "insert into users (email, firstName, lastName, password) " +
-    								"values (?, ?, ?, ?);";
-    		PreparedStatement preparedStatement = connection.prepareStatement(insertUserString);
-    		preparedStatement.setString(1, email);
-    		preparedStatement.setString(2, firstName);
-    		preparedStatement.setString(3, lastName);
-    		preparedStatement.setString(4, password);
-    		
-    		preparedStatement.execute();
-        	LOGGER.log(Level.INFO, "Registered user with: " + email + " " + firstName + " " + lastName);
-    	}
-    	catch (Exception e) {
-    		e.printStackTrace();
-    	}
-    	closeConnection(connection);
-		
+    	ApplicationContext ctx = 
+				   new AnnotationConfigApplicationContext(ServerBeanConfig.class);
+		MysqlDAO mysqlDAO = ctx.getBean(MysqlDAO.class);
+    	
+		mysqlDAO.registerUser(email, firstName, lastName, password);
     	return email;
     }
     
     @RequestMapping(value = "/user")
     public User getUserDetails(@RequestParam(value = "id") String id) {
     	
-    	String email = null, firstName = null, lastName = null, profilePictureUrl = null;
-    	Connection connection = getConnection();
-    	try {
-    		String insertUserString = "select * from users where email = ?;";
-    		PreparedStatement preparedStatement = connection.prepareStatement(insertUserString);
-    		preparedStatement.setString(1, id);
-    		
-	    	LOGGER.log(Level.INFO, "Searching details for user: " + id);
-    		ResultSet rs = preparedStatement.executeQuery();
-    		while (rs.next()) {
-    			email = rs.getString("email");
-    			firstName = rs.getString("firstName");
-    			lastName = rs.getString("lastName");
-    			//TODO: will we include this in the users table?
-    			//profilePictureUrl = rs.getString("profilePictureUrl");
-    		}
-    		
-    		LOGGER.log(Level.INFO, "Got details for user " + id);
-    	}
-    	catch (Exception e) {
-    		e.printStackTrace();
-    	}
-    	closeConnection(connection);
+    	String profilePictureUrl = null;
     	
-    	return new User(firstName, lastName, email, profilePictureUrl);
+    	ApplicationContext ctx = 
+				   new AnnotationConfigApplicationContext(ServerBeanConfig.class);
+		MysqlDAO mysqlDAO = ctx.getBean(MysqlDAO.class);
+		
+		ArrayList<String> details = mysqlDAO.getUserDetails(id);
+    	return new User(details.get(1), details.get(2), details.get(0), profilePictureUrl);
     }
     
     @RequestMapping(value = "/users")

@@ -11,4 +11,11 @@ public class ServerBeanConfig {
 		
 		return new UserController();
 	}
+	
+	@Bean
+	@Scope("singleton")
+	public MysqlDAO mysqlDAO() {
+		
+		return new MysqlDAO();
+	}
 }

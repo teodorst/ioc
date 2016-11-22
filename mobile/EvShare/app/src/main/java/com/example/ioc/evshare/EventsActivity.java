@@ -3,6 +3,7 @@ package com.example.ioc.evshare;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.example.ioc.evshare.adapters.EventsListAdapter;
+import com.example.ioc.evshare.listeners.EndlessScrollListener;
 import com.example.ioc.evshare.model.Event;
 
 import java.util.ArrayList;
@@ -22,9 +24,9 @@ import java.util.List;
 
 public class EventsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private final static String TAG = "EventsActivity";
 
     private ListView eventsListView;
-    private List<Event> eventsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,15 +117,36 @@ public class EventsActivity extends AppCompatActivity
 
 
     private void configureEventsList() {
+        // set adapter
+
+        eventsListView.setAdapter(new EventsListAdapter(this, R.layout.events_list_item, getEventsForPage(0)));
+
+        // set on scrollListener
+        eventsListView.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public boolean onLoadMore(int page, int totalItemCount) {
+                List<Event> newEvents = getEventsForPage(page);
+                EventsListAdapter adapter = (EventsListAdapter) eventsListView.getAdapter();
+                adapter.addAll(getEventsForPage(page));
+                return true;
+            }
+        });
+
+
+    }
+
+    private List<Event> getEventsForPage(int page) {
         // test
 
-        eventsList = new ArrayList<Event>();
-
+        List<Event>eventsList = new ArrayList<Event>();
+        Log.d(TAG, "getEventsForPage: Loading new Data!!");
         for (int i = 0; i < 2000; i ++) {
-            eventsList.add(new Event("name" + i, "location" + i, "date" + i));
+            eventsList.add(new Event("Page " + page + "name" + i, "location" + i, "date" + i));
         }
 
-        EventsListAdapter eventsListAdapter = new EventsListAdapter(this, R.layout.events_list_item, eventsList);
-        eventsListView.setAdapter(eventsListAdapter);
+        return eventsList;
     }
+
+
+
 }

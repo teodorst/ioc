@@ -10,8 +10,12 @@ import android.widget.EditText;
 
 import com.example.ioc.evshare.network.api.AuthService.AuthRequest;
 import com.example.ioc.evshare.network.api.AuthService.AuthServiceManager;
+import com.example.ioc.evshare.network.api.UserService.CreateUserRequest;
+import com.example.ioc.evshare.network.api.UserService.UserServiceManager;
 import com.example.ioc.evshare.network.eventsBus.BusProvider;
 import com.example.ioc.evshare.network.eventsBus.events.AuthEvent;
+import com.example.ioc.evshare.network.eventsBus.events.user.CreateUserEvent;
+import com.example.ioc.evshare.network.eventsBus.events.user.message.CreateUserEventMessage;
 import com.squareup.otto.Subscribe;
 
 public class LoginActivity extends AppCompatActivity {
@@ -30,28 +34,43 @@ public class LoginActivity extends AppCompatActivity {
         // connect to bus event
 //        BusProvider.bus().register(this);
         AuthServiceManager authService = AuthServiceManager.getInstance();
+        UserServiceManager userService = UserServiceManager.getInstance();
 
         // connect components
         loginButton = (Button) findViewById(R.id.login_button);
         emailEditText = (EditText) findViewById(R.id.login_activity_email_input);
         passwordEditText = (EditText) findViewById(R.id.login_activity_password_input);
 
-        // set event listeners
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            String userEmail;
-            String userPassword;
+//        // set event listeners
+//        loginButton.setOnClickListener(new View.OnClickListener() {
+//            String userEmail;
+//            String userPassword;
+//
+//            @Override
+//            public void onClick(View view) {
+//                userEmail = emailEditText.getText().toString();
+//                userPassword = emailEditText.getText().toString();
+//
+//                if (validateUsernameAndPassword(userEmail, userPassword)) {
+//                    sendAuthRequest(userEmail, userPassword);
+//                }
+//            }
+//        });
 
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userEmail = emailEditText.getText().toString();
-                userPassword = emailEditText.getText().toString();
-
-                if (validateUsernameAndPassword(userEmail, userPassword)) {
-                    sendAuthRequest(userEmail, userPassword);
-                }
+                CreateUserEventMessage createUserEventMessage = new CreateUserEventMessage();
+                CreateUserRequest createUserRequest = new CreateUserRequest();
+                createUserRequest.setEmail("Teodorstefu@gmail.com");
+                createUserRequest.setPassword("ana-are-mere");
+                createUserRequest.setFirstName("Teodor");
+                createUserRequest.setLastName("Stefu");
+                createUserEventMessage.setRequestBody(createUserRequest);
+                BusProvider.bus().post(new CreateUserEvent.OnLoadingStart(createUserEventMessage));
+                Log.d(TAG, "onClick: A plecat pe teava");
             }
         });
-
     }
 
     @Override
@@ -110,4 +129,15 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+
+
+    // TEST SUBSCRIBERS
+    @Subscribe public void onLoadingSuccesfull(CreateUserEvent.OnLoadedSuccess response) {
+        Log.d(TAG, "onLoadingSuccessful: " + response.getResponse());
+    }
+
+    @Subscribe public void onLoadingFailed(CreateUserEvent.OnLoadingError response) {
+        Log.d(TAG, "onLoadingError: " + response.getErrorMessage());
+    }
 }

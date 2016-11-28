@@ -1,8 +1,5 @@
 package com.example.ioc.evshare.network.api.UserService;
 
-/**
- * Created by Teodor on 26/11/2016.
- */
 
 public class CreateUserRequest {
 

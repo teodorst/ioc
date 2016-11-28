@@ -1,10 +1,9 @@
 package com.example.ioc.evshare.network.eventsBus.events;
 
 import com.example.ioc.evshare.network.api.AuthService.AuthRequest;
+import com.example.ioc.evshare.network.eventsBus.events.AuthEvent;
+import com.example.ioc.evshare.network.eventsBus.events.BaseNetworkEvent;
 
-/**
- * Created by Teodor on 25/11/2016.
- */
 
 public class GetEventsEvent extends BaseNetworkEvent {
     public static final AuthEvent.OnLoadingError FAILED = new AuthEvent.OnLoadingError(UNHANDLED_MSG, UNHANDLED_CODE);

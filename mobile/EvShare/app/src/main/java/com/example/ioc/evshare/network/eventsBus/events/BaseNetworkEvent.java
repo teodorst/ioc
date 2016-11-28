@@ -5,29 +5,33 @@ public class BaseNetworkEvent {
     public static final String UNHANDLED_MSG = "UNHANDLED_MSG";
     public static final int UNHANDLED_CODE = -1;
 
-    protected static class OnStart<Request> {
-        private Request mRequest;
+    protected static class OnStart<Message> {
+        private Message message;
 
-        public OnStart(Request request) {
-            mRequest = request;
+        public OnStart() {
+            this.message = null;
         }
 
-        public Request getRequest() {
-            return mRequest;
+        public OnStart(Message message) {
+            this.message = message;
+        }
+
+        public Message getMessage() {
+            return message;
         }
     }
 
 
     protected static class OnDone<Response> {
 
-        private Response mResponse;
+        private Response response;
 
         public OnDone(Response response) {
-            mResponse = response;
+            this.response = response;
         }
 
         public Response getResponse() {
-            return mResponse;
+            return response;
         }
 
     }

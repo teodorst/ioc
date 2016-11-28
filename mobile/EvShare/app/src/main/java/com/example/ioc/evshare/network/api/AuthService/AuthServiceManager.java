@@ -34,6 +34,7 @@ public class AuthServiceManager {
         // register to event bus
         bus = BusProvider.bus();
         bus.register(this);
+
     }
 
     public static AuthServiceManager getInstance() {
@@ -46,7 +47,7 @@ public class AuthServiceManager {
     @Subscribe
     public void authUser(AuthEvent.OnLoadingStart onLoadingStart) {
 
-        Call<AuthResponse> authUserCall = authApi.authUser(onLoadingStart.getRequest());
+        Call<AuthResponse> authUserCall = authApi.authUser(onLoadingStart.getMessage());
         authUserCall.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
@@ -56,11 +57,7 @@ public class AuthServiceManager {
                 else {
                     int statusCode = response.code();
                     ResponseBody errorBody = response.errorBody();
-                    try {
-                        bus.post(new AuthEvent.OnLoadingError(errorBody.string(), statusCode));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    bus.post(new AuthEvent.OnLoadingError(errorBody.toString(), statusCode));
                 }
             }
 

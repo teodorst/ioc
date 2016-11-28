@@ -1,11 +1,20 @@
 package com.example.ioc.evshare.network.api.UserService;
 
 
+import android.support.annotation.NonNull;
+
 public class CreateUserRequest {
 
+    @NonNull
     private String email;
+
+    @NonNull
     private String firstName;
+
+    @NonNull
     private String lastName;
+
+    @NonNull
     private String password;
 
 

@@ -11,11 +11,16 @@ import android.widget.EditText;
 import com.example.ioc.evshare.network.api.AuthService.AuthRequest;
 import com.example.ioc.evshare.network.api.AuthService.AuthServiceManager;
 import com.example.ioc.evshare.network.api.UserService.CreateUserRequest;
+import com.example.ioc.evshare.network.api.UserService.GetUserResponse;
 import com.example.ioc.evshare.network.api.UserService.UserServiceManager;
 import com.example.ioc.evshare.network.eventsBus.BusProvider;
 import com.example.ioc.evshare.network.eventsBus.events.AuthEvent;
 import com.example.ioc.evshare.network.eventsBus.events.user.CreateUserEvent;
+import com.example.ioc.evshare.network.eventsBus.events.user.GetUserEvent;
+import com.example.ioc.evshare.network.eventsBus.events.user.ListUsersEvent;
 import com.example.ioc.evshare.network.eventsBus.events.user.message.CreateUserEventMessage;
+import com.example.ioc.evshare.network.eventsBus.events.user.message.GetUserEventMessage;
+import com.example.ioc.evshare.network.eventsBus.events.user.message.ListUsersEventMessage;
 import com.squareup.otto.Subscribe;
 
 public class LoginActivity extends AppCompatActivity {
@@ -41,36 +46,61 @@ public class LoginActivity extends AppCompatActivity {
         emailEditText = (EditText) findViewById(R.id.login_activity_email_input);
         passwordEditText = (EditText) findViewById(R.id.login_activity_password_input);
 
-//        // set event listeners
+        // set event listeners
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            String userEmail;
+            String userPassword;
+
+            @Override
+            public void onClick(View view) {
+                userEmail = emailEditText.getText().toString();
+                userPassword = emailEditText.getText().toString();
+
+                if (validateUsernameAndPassword(userEmail, userPassword)) {
+                    sendAuthRequest(userEmail, userPassword);
+                }
+            }
+        });
+
 //        loginButton.setOnClickListener(new View.OnClickListener() {
-//            String userEmail;
-//            String userPassword;
-//
 //            @Override
 //            public void onClick(View view) {
-//                userEmail = emailEditText.getText().toString();
-//                userPassword = emailEditText.getText().toString();
+//                CreateUserEventMessage createUserEventMessage = new CreateUserEventMessage();
+//                CreateUserRequest createUserRequest = new CreateUserRequest();
+//                createUserRequest.setEmail("Teodorstefu@gmail.com");
+//                createUserRequest.setPassword("ana-are-mere");
+//                createUserRequest.setFirstName("Teodor");
+//                createUserRequest.setLastName("Stefu");
+//                createUserEventMessage.setRequestBody(createUserRequest);
+//                BusProvider.bus().post(new CreateUserEvent.OnLoadingStart(createUserEventMessage));
+//                Log.d(TAG, "onClick: A plecat pe teava");
+//            }
+//        });
+//        loginButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
 //
-//                if (validateUsernameAndPassword(userEmail, userPassword)) {
-//                    sendAuthRequest(userEmail, userPassword);
-//                }
+//                GetUserEventMessage getUserEventMessage = new GetUserEventMessage();
+//                getUserEventMessage.setId("ana_are_mere");
+//
+//                BusProvider.bus().post(new GetUserEvent.OnLoadingStart(getUserEventMessage));
+//                Log.d(TAG, "onClick: A plecat pe teava get user");
 //            }
 //        });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CreateUserEventMessage createUserEventMessage = new CreateUserEventMessage();
-                CreateUserRequest createUserRequest = new CreateUserRequest();
-                createUserRequest.setEmail("Teodorstefu@gmail.com");
-                createUserRequest.setPassword("ana-are-mere");
-                createUserRequest.setFirstName("Teodor");
-                createUserRequest.setLastName("Stefu");
-                createUserEventMessage.setRequestBody(createUserRequest);
-                BusProvider.bus().post(new CreateUserEvent.OnLoadingStart(createUserEventMessage));
-                Log.d(TAG, "onClick: A plecat pe teava");
-            }
-        });
+//        loginButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ListUsersEventMessage listUserEventMessage = new ListUsersEventMessage();
+//                listUserEventMessage.setPageNumber(0);
+//                listUserEventMessage.setPageSize(100);
+//                listUserEventMessage.setSortBy("FirstName");
+//                listUserEventMessage.setSortOrder("ASC");
+//                BusProvider.bus().post(new ListUsersEvent.OnLoadingStart(listUserEventMessage));
+//                Log.d(TAG, "onClick: A plecat pe teava list users");
+//            }
+//        });
+
     }
 
     @Override
@@ -133,11 +163,28 @@ public class LoginActivity extends AppCompatActivity {
 
 
     // TEST SUBSCRIBERS
-    @Subscribe public void onLoadingSuccesfull(CreateUserEvent.OnLoadedSuccess response) {
-        Log.d(TAG, "onLoadingSuccessful: " + response.getResponse());
+    @Subscribe public void onLoadingSuccesful(CreateUserEvent.OnLoadedSuccess response) {
+        Log.d(TAG, "onLoadingSuccessful: " + response.getResponse().getId());
     }
 
     @Subscribe public void onLoadingFailed(CreateUserEvent.OnLoadingError response) {
         Log.d(TAG, "onLoadingError: " + response.getErrorMessage());
+    }
+
+
+    @Subscribe public void onLoadingFailed(GetUserEvent.OnLoadingError response) {
+        Log.d(TAG, "onLoadingFailed: " + response.getErrorMessage());
+    }
+
+    @Subscribe public void onLoadingSuccessful(GetUserEvent.OnLoadingSuccessful response) {
+        Log.d(TAG, "onLoadingSuccessful: " + response.getResponse().getId());
+    }
+
+    @Subscribe public void onLoadingFailed(ListUsersEvent.OnLoadingError response) {
+        Log.d(TAG, "onLoadingFailed: " + response.getErrorMessage());
+    }
+
+    @Subscribe public void onLoadingSuccessful(ListUsersEvent.OnLoadingSuccessful response) {
+        Log.d(TAG, "onLoadingSuccessful: " + response.getResponse().getTotalNumber());
     }
 }

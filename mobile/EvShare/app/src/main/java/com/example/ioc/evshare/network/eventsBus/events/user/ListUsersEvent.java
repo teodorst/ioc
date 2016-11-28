@@ -9,7 +9,7 @@ import com.example.ioc.evshare.network.eventsBus.events.user.message.ListUsersEv
 
 public class ListUsersEvent extends BaseNetworkEvent {
 
-    public static final OnLoadingFailed FAILED = new OnLoadingFailed(UNHANDLED_MSG, UNHANDLED_CODE);
+    public static final OnLoadingError FAILED_LIST_USER_EVENT = new OnLoadingError(UNHANDLED_MSG, UNHANDLED_CODE);
 
     public static class OnLoadingStart extends OnStart<ListUsersEventMessage> {
         public OnLoadingStart(ListUsersEventMessage message) {
@@ -24,8 +24,8 @@ public class ListUsersEvent extends BaseNetworkEvent {
     }
 
 
-    public static class OnLoadingFailed extends OnFailed {
-        public OnLoadingFailed(String errorMessage, int code) {
+    public static class OnLoadingError extends OnFailed {
+        public OnLoadingError(String errorMessage, int code) {
             super(errorMessage, code);
         }
     }

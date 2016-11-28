@@ -6,11 +6,11 @@ import com.example.ioc.evshare.network.eventsBus.events.user.message.GetUserEven
 
 public class GetUserEvent extends BaseNetworkEvent {
 
-    public static final OnLoadingFailed FAILED_GET_USER_EVENT = new OnLoadingFailed(UNHANDLED_MSG, UNHANDLED_CODE);
+    public static final OnLoadingError FAILED_GET_USER_EVENT = new OnLoadingError(UNHANDLED_MSG, UNHANDLED_CODE);
 
     public static class OnLoadingStart extends OnStart<GetUserEventMessage> {
-        public OnLoadingStart() {
-            super();
+        public OnLoadingStart(GetUserEventMessage message) {
+            super(message);
         }
     }
 
@@ -20,8 +20,8 @@ public class GetUserEvent extends BaseNetworkEvent {
         }
     }
 
-    public static class OnLoadingFailed extends OnFailed {
-        public OnLoadingFailed(String errorMessage, int code) {
+    public static class OnLoadingError extends OnFailed {
+        public OnLoadingError(String errorMessage, int code) {
             super(errorMessage, code);
         }
     }

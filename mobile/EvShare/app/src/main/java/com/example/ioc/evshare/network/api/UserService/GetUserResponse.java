@@ -7,7 +7,6 @@ public class GetUserResponse {
     private String email;
     private String firstName;
     private String lastName;
-    private String password;
 
 
     public String getId() {
@@ -41,15 +40,6 @@ public class GetUserResponse {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
 
 }
 

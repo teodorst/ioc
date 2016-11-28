@@ -3,6 +3,7 @@ package com.example.ioc.evshare.network.eventsBus.events.user.message;
 import android.graphics.drawable.GradientDrawable;
 
 public class ListUsersEventMessage {
+
     private int pageNumber;
     private int pageSize;
     private String sortBy;

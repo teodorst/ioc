@@ -1,4 +1,4 @@
-package com.example.ioc.evshare.network.eventsBus.events;
+package com.example.ioc.evshare.network.actionsBus.actions;
 
 
 public class BaseNetworkEvent {

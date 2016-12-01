@@ -1,8 +1,6 @@
-package com.example.ioc.evshare.network.eventsBus.events.user.message;
+package com.example.ioc.evshare.network.actionsBus.actions.user.message;
 
-import android.graphics.drawable.GradientDrawable;
-
-public class ListUsersEventMessage {
+public class ListUsersActionMessage {
 
     private int pageNumber;
     private int pageSize;

@@ -1,15 +1,15 @@
-package com.example.ioc.evshare.network.eventsBus.events.user;
+package com.example.ioc.evshare.network.actionsBus.actions.user;
 
 import com.example.ioc.evshare.network.api.UserService.GetUserResponse;
-import com.example.ioc.evshare.network.eventsBus.events.BaseNetworkEvent;
-import com.example.ioc.evshare.network.eventsBus.events.user.message.GetUserEventMessage;
+import com.example.ioc.evshare.network.actionsBus.actions.BaseNetworkEvent;
+import com.example.ioc.evshare.network.actionsBus.actions.user.message.GetUserActionMessage;
 
-public class GetUserEvent extends BaseNetworkEvent {
+public class GetUserAction extends BaseNetworkEvent {
 
     public static final OnLoadingError FAILED_GET_USER_EVENT = new OnLoadingError(UNHANDLED_MSG, UNHANDLED_CODE);
 
-    public static class OnLoadingStart extends OnStart<GetUserEventMessage> {
-        public OnLoadingStart(GetUserEventMessage message) {
+    public static class OnLoadingStart extends OnStart<GetUserActionMessage> {
+        public OnLoadingStart(GetUserActionMessage message) {
             super(message);
         }
     }

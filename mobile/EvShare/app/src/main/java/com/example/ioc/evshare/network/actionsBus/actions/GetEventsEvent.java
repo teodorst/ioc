@@ -1,12 +1,10 @@
-package com.example.ioc.evshare.network.eventsBus.events;
+package com.example.ioc.evshare.network.actionsBus.actions;
 
 import com.example.ioc.evshare.network.api.AuthService.AuthRequest;
-import com.example.ioc.evshare.network.eventsBus.events.AuthEvent;
-import com.example.ioc.evshare.network.eventsBus.events.BaseNetworkEvent;
 
 
 public class GetEventsEvent extends BaseNetworkEvent {
-    public static final AuthEvent.OnLoadingError FAILED = new AuthEvent.OnLoadingError(UNHANDLED_MSG, UNHANDLED_CODE);
+    public static final AuthAction.OnLoadingError FAILED = new AuthAction.OnLoadingError(UNHANDLED_MSG, UNHANDLED_CODE);
 
     public static class OnLoaded extends BaseNetworkEvent.OnDone<String> {
         public OnLoaded(String token) {

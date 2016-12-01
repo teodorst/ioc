@@ -1,13 +1,9 @@
 package com.example.ioc.evshare.network.api.AuthService;
 
-import android.util.Log;
-
-import com.example.ioc.evshare.network.eventsBus.BusProvider;
-import com.example.ioc.evshare.network.eventsBus.events.AuthEvent;
+import com.example.ioc.evshare.network.actionsBus.BusProvider;
+import com.example.ioc.evshare.network.actionsBus.actions.AuthAction;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
-
-import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -45,28 +41,28 @@ public class AuthServiceManager {
     }
 
     @Subscribe
-    public void authUser(AuthEvent.OnLoadingStart onLoadingStart) {
+    public void authUser(AuthAction.OnLoadingStart onLoadingStart) {
 
         Call<AuthResponse> authUserCall = authApi.authUser(onLoadingStart.getMessage());
         authUserCall.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
                 if (response.isSuccessful()) {
-                    bus.post(new AuthEvent.OnLoadedSuccess(response.body().getAuthToken()));
+                    bus.post(new AuthAction.OnLoadedSuccess(response.body().getAuthToken()));
                 }
                 else {
                     int statusCode = response.code();
                     ResponseBody errorBody = response.errorBody();
-                    bus.post(new AuthEvent.OnLoadingError(errorBody.toString(), statusCode));
+                    bus.post(new AuthAction.OnLoadingError(errorBody.toString(), statusCode));
                 }
             }
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable error) {
                 if (error != null && error.getMessage() != null) {
-                    bus.post(new AuthEvent.OnLoadingError(error.getMessage(), -1));
+                    bus.post(new AuthAction.OnLoadingError(error.getMessage(), -1));
                 } else {
-                    bus.post(AuthEvent.FAILED);
+                    bus.post(AuthAction.FAILED);
                 }
             }
         });

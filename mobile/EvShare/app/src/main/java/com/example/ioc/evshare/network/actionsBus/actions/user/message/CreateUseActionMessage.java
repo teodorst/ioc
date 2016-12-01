@@ -1,10 +1,10 @@
-package com.example.ioc.evshare.network.eventsBus.events.user.message;
+package com.example.ioc.evshare.network.actionsBus.actions.user.message;
 
 import android.support.annotation.NonNull;
 
 import com.example.ioc.evshare.network.api.UserService.CreateUserRequest;
 
-public class CreateUserEventMessage {
+public class CreateUseActionMessage {
 
     @NonNull
     private CreateUserRequest requestBody;

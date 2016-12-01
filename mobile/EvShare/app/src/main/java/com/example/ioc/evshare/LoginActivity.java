@@ -10,17 +10,12 @@ import android.widget.EditText;
 
 import com.example.ioc.evshare.network.api.AuthService.AuthRequest;
 import com.example.ioc.evshare.network.api.AuthService.AuthServiceManager;
-import com.example.ioc.evshare.network.api.UserService.CreateUserRequest;
-import com.example.ioc.evshare.network.api.UserService.GetUserResponse;
 import com.example.ioc.evshare.network.api.UserService.UserServiceManager;
-import com.example.ioc.evshare.network.eventsBus.BusProvider;
-import com.example.ioc.evshare.network.eventsBus.events.AuthEvent;
-import com.example.ioc.evshare.network.eventsBus.events.user.CreateUserEvent;
-import com.example.ioc.evshare.network.eventsBus.events.user.GetUserEvent;
-import com.example.ioc.evshare.network.eventsBus.events.user.ListUsersEvent;
-import com.example.ioc.evshare.network.eventsBus.events.user.message.CreateUserEventMessage;
-import com.example.ioc.evshare.network.eventsBus.events.user.message.GetUserEventMessage;
-import com.example.ioc.evshare.network.eventsBus.events.user.message.ListUsersEventMessage;
+import com.example.ioc.evshare.network.actionsBus.BusProvider;
+import com.example.ioc.evshare.network.actionsBus.actions.AuthAction;
+import com.example.ioc.evshare.network.actionsBus.actions.user.CreateUserAction;
+import com.example.ioc.evshare.network.actionsBus.actions.user.GetUserAction;
+import com.example.ioc.evshare.network.actionsBus.actions.user.ListUsersAction;
 import com.squareup.otto.Subscribe;
 
 public class LoginActivity extends AppCompatActivity {
@@ -65,14 +60,14 @@ public class LoginActivity extends AppCompatActivity {
 //        loginButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                CreateUserEventMessage createUserEventMessage = new CreateUserEventMessage();
+//                CreateUseActionMessage createUserEventMessage = new CreateUseActionMessage();
 //                CreateUserRequest createUserRequest = new CreateUserRequest();
 //                createUserRequest.setEmail("Teodorstefu@gmail.com");
 //                createUserRequest.setPassword("ana-are-mere");
 //                createUserRequest.setFirstName("Teodor");
 //                createUserRequest.setLastName("Stefu");
 //                createUserEventMessage.setRequestBody(createUserRequest);
-//                BusProvider.bus().post(new CreateUserEvent.OnLoadingStart(createUserEventMessage));
+//                BusProvider.bus().post(new CreateUserAction.OnLoadingStart(createUserEventMessage));
 //                Log.d(TAG, "onClick: A plecat pe teava");
 //            }
 //        });
@@ -80,10 +75,10 @@ public class LoginActivity extends AppCompatActivity {
 //            @Override
 //            public void onClick(View view) {
 //
-//                GetUserEventMessage getUserEventMessage = new GetUserEventMessage();
+//                GetUserActionMessage getUserEventMessage = new GetUserActionMessage();
 //                getUserEventMessage.setId("ana_are_mere");
 //
-//                BusProvider.bus().post(new GetUserEvent.OnLoadingStart(getUserEventMessage));
+//                BusProvider.bus().post(new GetUserAction.OnLoadingStart(getUserEventMessage));
 //                Log.d(TAG, "onClick: A plecat pe teava get user");
 //            }
 //        });
@@ -91,12 +86,12 @@ public class LoginActivity extends AppCompatActivity {
 //        loginButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                ListUsersEventMessage listUserEventMessage = new ListUsersEventMessage();
+//                ListUsersActionMessage listUserEventMessage = new ListUsersActionMessage();
 //                listUserEventMessage.setPageNumber(0);
 //                listUserEventMessage.setPageSize(100);
 //                listUserEventMessage.setSortBy("FirstName");
 //                listUserEventMessage.setSortOrder("ASC");
-//                BusProvider.bus().post(new ListUsersEvent.OnLoadingStart(listUserEventMessage));
+//                BusProvider.bus().post(new ListUsersAction.OnLoadingStart(listUserEventMessage));
 //                Log.d(TAG, "onClick: A plecat pe teava list users");
 //            }
 //        });
@@ -119,10 +114,10 @@ public class LoginActivity extends AppCompatActivity {
         AuthRequest requestBody = new AuthRequest();
         requestBody.setEmail("ana@mere.com");
         requestBody.setPassword("1234");
-        BusProvider.bus().post(new AuthEvent.OnLoadingStart(requestBody));
+        BusProvider.bus().post(new AuthAction.OnLoadingStart(requestBody));
     }
 
-    @Subscribe public void onLoadingSuccessful(AuthEvent.OnLoadedSuccess onLoaded) {
+    @Subscribe public void onLoadingSuccessful(AuthAction.OnLoadedSuccess onLoaded) {
         Log.d(TAG, "onLoadingSuccessful: " + onLoaded.getResponse());
 
         // i will switch activity
@@ -130,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onLoadingFailed(AuthEvent.OnLoadingError onLoadingFailed) {
+    public void onLoadingFailed(AuthAction.OnLoadingError onLoadingFailed) {
         //try to fix or show a message
         Log.d(TAG, "onLoadingFailed: " + onLoadingFailed.getErrorMessage());
         // i will show an invalid email and password combination
@@ -163,28 +158,28 @@ public class LoginActivity extends AppCompatActivity {
 
 
     // TEST SUBSCRIBERS
-    @Subscribe public void onLoadingSuccesful(CreateUserEvent.OnLoadedSuccess response) {
+    @Subscribe public void onLoadingSuccesful(CreateUserAction.OnLoadedSuccess response) {
         Log.d(TAG, "onLoadingSuccessful: " + response.getResponse().getId());
     }
 
-    @Subscribe public void onLoadingFailed(CreateUserEvent.OnLoadingError response) {
+    @Subscribe public void onLoadingFailed(CreateUserAction.OnLoadingError response) {
         Log.d(TAG, "onLoadingError: " + response.getErrorMessage());
     }
 
 
-    @Subscribe public void onLoadingFailed(GetUserEvent.OnLoadingError response) {
+    @Subscribe public void onLoadingFailed(GetUserAction.OnLoadingError response) {
         Log.d(TAG, "onLoadingFailed: " + response.getErrorMessage());
     }
 
-    @Subscribe public void onLoadingSuccessful(GetUserEvent.OnLoadingSuccessful response) {
+    @Subscribe public void onLoadingSuccessful(GetUserAction.OnLoadingSuccessful response) {
         Log.d(TAG, "onLoadingSuccessful: " + response.getResponse().getId());
     }
 
-    @Subscribe public void onLoadingFailed(ListUsersEvent.OnLoadingError response) {
+    @Subscribe public void onLoadingFailed(ListUsersAction.OnLoadingError response) {
         Log.d(TAG, "onLoadingFailed: " + response.getErrorMessage());
     }
 
-    @Subscribe public void onLoadingSuccessful(ListUsersEvent.OnLoadingSuccessful response) {
+    @Subscribe public void onLoadingSuccessful(ListUsersAction.OnLoadingSuccessful response) {
         Log.d(TAG, "onLoadingSuccessful: " + response.getResponse().getTotalNumber());
     }
 }

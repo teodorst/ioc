@@ -1,9 +1,9 @@
-package com.example.ioc.evshare.network.eventsBus.events;
+package com.example.ioc.evshare.network.actionsBus.actions;
 
 import com.example.ioc.evshare.network.api.AuthService.AuthRequest;
 
 
-public class AuthEvent extends BaseNetworkEvent {
+public class AuthAction extends BaseNetworkEvent {
 
     public static final OnLoadingError FAILED = new OnLoadingError(UNHANDLED_MSG, UNHANDLED_CODE);
 

@@ -1,11 +1,10 @@
 package com.example.ioc.evshare.network.api.UserService;
 
-import com.example.ioc.evshare.network.api.AuthService.AuthService;
-import com.example.ioc.evshare.network.eventsBus.BusProvider;
-import com.example.ioc.evshare.network.eventsBus.events.user.CreateUserEvent;
-import com.example.ioc.evshare.network.eventsBus.events.user.GetUserEvent;
-import com.example.ioc.evshare.network.eventsBus.events.user.ListUsersEvent;
-import com.example.ioc.evshare.network.eventsBus.events.user.message.ListUsersEventMessage;
+import com.example.ioc.evshare.network.actionsBus.BusProvider;
+import com.example.ioc.evshare.network.actionsBus.actions.user.CreateUserAction;
+import com.example.ioc.evshare.network.actionsBus.actions.user.GetUserAction;
+import com.example.ioc.evshare.network.actionsBus.actions.user.ListUsersAction;
+import com.example.ioc.evshare.network.actionsBus.actions.user.message.ListUsersActionMessage;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -44,17 +43,17 @@ public class UserServiceManager {
     }
 
     @Subscribe
-    public void createUser(CreateUserEvent.OnLoadingStart onLoadingStartMessage) {
+    public void createUser(CreateUserAction.OnLoadingStart onLoadingStartMessage) {
         Call<CreateUserResponse> call = userServiceAPI.createUser(onLoadingStartMessage.getMessage().getRequestBody());
         call.enqueue(new Callback<CreateUserResponse>() {
             @Override
             public void onResponse(Call<CreateUserResponse> call, Response<CreateUserResponse> response) {
                 if (response.isSuccessful()) {
-                    bus.post(new CreateUserEvent.OnLoadedSuccess(response.body()));
+                    bus.post(new CreateUserAction.OnLoadedSuccess(response.body()));
                 } else {
                     int statusCode = response.code();
                     ResponseBody errorBody = response.errorBody();
-                    bus.post(new CreateUserEvent.OnLoadingError(errorBody.toString(), statusCode));
+                    bus.post(new CreateUserAction.OnLoadingError(errorBody.toString(), statusCode));
                 }
 
             }
@@ -62,63 +61,63 @@ public class UserServiceManager {
             @Override
             public void onFailure(Call<CreateUserResponse> call, Throwable error) {
                 if (error != null && error.getMessage() != null) {
-                    bus.post(new CreateUserEvent.OnLoadingError(error.getMessage(), -1));
+                    bus.post(new CreateUserAction.OnLoadingError(error.getMessage(), -1));
                 } else {
-                    bus.post(CreateUserEvent.FAILED_CREATE_USER_EVENT);
+                    bus.post(CreateUserAction.FAILED_CREATE_USER_EVENT);
                 }
             }
         });
     }
 
     @Subscribe
-    public void getUser(GetUserEvent.OnLoadingStart onLoadingStartMessage) {
+    public void getUser(GetUserAction.OnLoadingStart onLoadingStartMessage) {
         Call<GetUserResponse> call = userServiceAPI.getUser(onLoadingStartMessage.getMessage().getId());
         call.enqueue(new Callback<GetUserResponse>() {
             @Override
             public void onResponse(Call<GetUserResponse> call, Response<GetUserResponse> response) {
                 if (response.isSuccessful()) {
-                    bus.post(new GetUserEvent.OnLoadingSuccessful(response.body()));
+                    bus.post(new GetUserAction.OnLoadingSuccessful(response.body()));
                 } else {
                     int statusCode = response.code();
                     ResponseBody errorBody = response.errorBody();
-                    bus.post(new GetUserEvent.OnLoadingError(errorBody.toString(), statusCode));
+                    bus.post(new GetUserAction.OnLoadingError(errorBody.toString(), statusCode));
                 }
             }
 
             @Override
             public void onFailure(Call<GetUserResponse> call, Throwable error) {
                 if (error != null && error.getMessage() != null) {
-                    bus.post(new CreateUserEvent.OnLoadingError(error.getMessage(), -1));
+                    bus.post(new CreateUserAction.OnLoadingError(error.getMessage(), -1));
                 } else {
-                    bus.post(CreateUserEvent.FAILED_CREATE_USER_EVENT);
+                    bus.post(CreateUserAction.FAILED_CREATE_USER_EVENT);
                 }
             }
         });
     }
 
     @Subscribe
-    public void listUsers(ListUsersEvent.OnLoadingStart onLoadingStartMessage) {
-        ListUsersEventMessage message = onLoadingStartMessage.getMessage();
+    public void listUsers(ListUsersAction.OnLoadingStart onLoadingStartMessage) {
+        ListUsersActionMessage message = onLoadingStartMessage.getMessage();
         Call<ListUsersResponse> call = userServiceAPI.listUsers(message.getPageNumber(), message.getPageSize(),
                 message.getSortBy(), message.getSortOrder());
         call.enqueue(new Callback<ListUsersResponse>() {
             @Override
             public void onResponse(Call<ListUsersResponse> call, Response<ListUsersResponse> response) {
                 if (response.isSuccessful()) {
-                    bus.post(new ListUsersEvent.OnLoadingSuccessful(response.body()));
+                    bus.post(new ListUsersAction.OnLoadingSuccessful(response.body()));
                 } else {
                     int statusCode = response.code();
                     ResponseBody errorBody = response.errorBody();
-                    bus.post(new ListUsersEvent.OnLoadingError(errorBody.toString(), statusCode));
+                    bus.post(new ListUsersAction.OnLoadingError(errorBody.toString(), statusCode));
                 }
             }
 
             @Override
             public void onFailure(Call<ListUsersResponse> call, Throwable error) {
                 if (error != null && error.getMessage() != null) {
-                    bus.post(new ListUsersEvent.OnLoadingError(error.getMessage(), -1));
+                    bus.post(new ListUsersAction.OnLoadingError(error.getMessage(), -1));
                 } else {
-                    bus.post(ListUsersEvent.FAILED_LIST_USER_EVENT);
+                    bus.post(ListUsersAction.FAILED_LIST_USER_EVENT);
                 }
             }
         });

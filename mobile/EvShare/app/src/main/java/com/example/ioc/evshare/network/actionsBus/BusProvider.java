@@ -1,4 +1,4 @@
-package com.example.ioc.evshare.network.eventsBus;
+package com.example.ioc.evshare.network.actionsBus;
 
 import com.squareup.otto.Bus;
 

@@ -1,0 +1,21 @@
+package com.servercore;
+
+import org.springframework.context.annotation.*;
+
+@Configuration
+public class ServerBeanConfig {
+	
+	@Bean
+	@Scope("singleton")
+	public UserController userController() {
+		
+		return new UserController();
+	}
+	
+	@Bean
+	@Scope("singleton")
+	public MysqlDAO mysqlDAO() {
+		
+		return new MysqlDAO();
+	}
+}

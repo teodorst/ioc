@@ -1,0 +1,20 @@
+dolphin(3969) KXMLGUI::ActionList::plug: Index  19  is not within range (0 -  11 
+Object::connect: No such signal org::freedesktop::UPower::DeviceAdded(QDBusObjectPath)
+Object::connect: No such signal org::freedesktop::UPower::DeviceRemoved(QDBusObjectPath)
+Bus::open: Can not get ibus-daemon's address. 
+IBusInputContext::createInputContext: no connection to ibus-daemon 
+dolphin(3983) KXMLGUI::ActionList::plug: Index  19  is not within range (0 -  11 
+Object::connect: No such signal org::freedesktop::UPower::DeviceAdded(QDBusObjectPath)
+Object::connect: No such signal org::freedesktop::UPower::DeviceRemoved(QDBusObjectPath)
+Bus::open: Can not get ibus-daemon's address. 
+IBusInputContext::createInputContext: no connection to ibus-daemon 
+dolphin(3990) KXMLGUI::ActionList::plug: Index  19  is not within range (0 -  11 
+Object::connect: No such signal org::freedesktop::UPower::DeviceAdded(QDBusObjectPath)
+Object::connect: No such signal org::freedesktop::UPower::DeviceRemoved(QDBusObjectPath)
+Bus::open: Can not get ibus-daemon's address. 
+IBusInputContext::createInputContext: no connection to ibus-daemon 
+QSqlQuery::prepare: database not open
+QSqlDatabasePrivate::database: unable to open database: "unable to open database file Error opening database" 
+QSqlQuery::prepare: database not open
+QSqlDatabasePrivate::database: unable to open database: "unable to open database file Error opening database" 
+QSqlQuery::prepare: database not open

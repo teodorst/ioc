@@ -15,16 +15,31 @@
 	<script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
 
-<body ng-app="app" ng-cloak ng-controller="AppController as vm">
+<body ng-app="EvShare">
+<!--ng-cloak ng-controller="EvShareController as vm"-->
+
 <div ui-view></div>
+
+
+<!--<div class="footer">-->
+<!--<div class="container">-->
+<!--<h2>Available for iPhone and Android.</h2>-->
+<!--<img src="https://s3.amazonaws.com/codecademy-content/projects/shutterbugg/app-store.png" width="120px" />-->
+<!--<img src="https://s3.amazonaws.com/codecademy-content/projects/shutterbugg/google-play.png" width="110px" />-->
+<!--</div>-->
+<!--</div>-->
 
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <script src="bower_components/angular-ui-clock/dist/angular-clock.js"></script>
 
 <script src="app.js"></script>
 <script src="appController.js"></script>
+<script src="createEventController.js"></script>
+<script src="appService.js"></script>
+<script src="appResource.js"></script>
 
 <script src="components/version/version.js"></script>
 <script src="components/version/version-directive.js"></script>

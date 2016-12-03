@@ -1,17 +1,14 @@
 package com.servercore.user;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,14 +19,6 @@ import com.servercore.jwt.JwtUser;
 
 @RestController
 public class UserController {
-    private static final List<Person> persons;
-
-    static {
-        persons = new ArrayList<>();
-        persons.add(new Person("Hello", "World"));
-        persons.add(new Person("Foo", "Bar"));
-    }
-
     
     @Value("${jwt.header}")
     private String tokenHeader;
@@ -66,7 +55,5 @@ public class UserController {
     	newUser.setAuthorities(Collections.singletonList(userAuthority));
     	userRepository.save(newUser);
     }
-    
-    
-    
+
 }

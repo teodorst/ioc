@@ -19,18 +19,8 @@ public class ServerMain {
 	
 	public static void initDatabase() {
 		
-		//old way of connecting to DB
-		/*Class.forName("com.mysql.jdbc.Driver");
-		connection = DriverManager.getConnection(
-				"jdbc:mysql://localhost:3306/evshare", "root", "test");
-		statement = connection.createStatement();*/
-		
 		ApplicationContext ctx = 
 				   new AnnotationConfigApplicationContext(ServerBeanConfig.class);
-//		MysqlDAO mysqlDAO = ctx.getBean(MysqlDAO.class);
-		
-//		mysqlDAO.dropTables();
-//		mysqlDAO.createTables();
 		
 	}
 
@@ -40,11 +30,6 @@ public class ServerMain {
 //		if (TESTING)
 //			initDatabase();
 		SpringApplication.run(ServerMain.class, args);
-		
-		/*ApplicationContext ctx = 
-				   new AnnotationConfigApplicationContext(ServerBeanConfig.class);
-		
-		UserController userCtrl = ctx.getBean(UserController.class);*/
 		
 	}
 

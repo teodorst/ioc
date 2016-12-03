@@ -8,12 +8,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 @SpringBootApplication
 public class ServerMain {
 
-	private final static Logger LOGGER = Logger.getLogger(User.class.getName());
+//	private final static Logger LOGGER = Logger.getLogger(User.class.getName());
 	private final static boolean TESTING = true;
 	
 	
@@ -28,18 +27,18 @@ public class ServerMain {
 		
 		ApplicationContext ctx = 
 				   new AnnotationConfigApplicationContext(ServerBeanConfig.class);
-		MysqlDAO mysqlDAO = ctx.getBean(MysqlDAO.class);
+//		MysqlDAO mysqlDAO = ctx.getBean(MysqlDAO.class);
 		
-		mysqlDAO.dropTables();
-		mysqlDAO.createTables();
+//		mysqlDAO.dropTables();
+//		mysqlDAO.createTables();
 		
 	}
 
 	public static void main(String[] args) {
 		
 		//TODO: Remove after testing is done
-		if (TESTING)
-			initDatabase();
+//		if (TESTING)
+//			initDatabase();
 		SpringApplication.run(ServerMain.class, args);
 		
 		/*ApplicationContext ctx = 

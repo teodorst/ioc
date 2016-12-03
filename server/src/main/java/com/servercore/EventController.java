@@ -15,24 +15,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class EventController extends Controller {
+public class EventController {
 
 	private final static Logger LOGGER = Logger.getLogger(EventController.class.getName());
 	private final static String ERROR_CODE = "-1";
 
-	@RequestMapping(value = "/event", method = RequestMethod.POST)
-	public String createEvent(@RequestBody Map<String, Object> payload) {
-		
-		long id = Event.getNextId();
-    	String name = (String)payload.get("name");
-    	String location = (String)payload.get("location");
-    	String date = (String)payload.get("date");
-    	String userEmail = (String)payload.get("creator");
-    	
-    	ApplicationContext ctx = 
-				   new AnnotationConfigApplicationContext(ServerBeanConfig.class);
-		MysqlDAO mysqlDAO = ctx.getBean(MysqlDAO.class);
-    	
-    	return mysqlDAO.createEvent(name, location, date, userEmail, id);
-	}
+//	@RequestMapping(value = "/event", method = RequestMethod.POST)
+//	public String createEvent(@RequestBody Map<String, Object> payload) {
+//		
+//		long id = Event.getNextId();
+//    	String name = (String)payload.get("name");
+//    	String location = (String)payload.get("location");
+//    	String date = (String)payload.get("date");
+//    	String userEmail = (String)payload.get("creator");
+//    	
+//    	ApplicationContext ctx = 
+//				   new AnnotationConfigApplicationContext(ServerBeanConfig.class);
+//		MysqlDAO mysqlDAO = ctx.getBean(MysqlDAO.class);
+//    	
+//    	return mysqlDAO.createEvent(name, location, date, userEmail, id);
+//	}
 }

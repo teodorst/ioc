@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_create_user"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.ioc.evshare.activities.CreateUserActivity"
+    tools:showIn="@layout/activity_create_user">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="First Name"/>
+
+        <EditText
+            android:id="@+id/create_user_firstname_input"
+            android:layout_width="@dimen/activity_create_user_input_field_width"
+            android:layout_height="@dimen/activity_create_user_input_field_height"
+            android:background="@drawable/login_activity_input_field_background"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last Name"/>
+
+        <EditText
+            android:id="@+id/create_user_lastname_input"
+            android:layout_width="@dimen/activity_create_user_input_field_width"
+            android:layout_height="@dimen/activity_create_user_input_field_height"
+            android:background="@drawable/login_activity_input_field_background"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"/>
+
+        <EditText
+            android:id="@+id/create_user_email_input"
+            android:layout_width="@dimen/activity_create_user_input_field_width"
+            android:layout_height="@dimen/activity_create_user_input_field_height"
+            android:background="@drawable/login_activity_input_field_background"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Password"/>
+
+        <EditText
+            android:id="@+id/create_user_password_input"
+            android:layout_width="@dimen/activity_create_user_input_field_width"
+            android:layout_height="@dimen/activity_create_user_input_field_height"
+            android:background="@drawable/login_activity_input_field_background"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:inputType="textPassword"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repeat Password"/>
+
+        <EditText
+            android:id="@+id/create_user_password_repeat_input"
+            android:layout_width="@dimen/activity_create_user_input_field_width"
+            android:layout_height="@dimen/activity_create_user_input_field_height"
+            android:background="@drawable/login_activity_input_field_background"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="45dp"
+            android:inputType="textPassword"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,4 +1,4 @@
-package com.example.ioc.evshare;
+package com.example.ioc.evshare.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.example.ioc.evshare.R;
 import com.example.ioc.evshare.adapters.EventsListAdapter;
 import com.example.ioc.evshare.listeners.EndlessScrollListener;
 import com.example.ioc.evshare.model.Event;

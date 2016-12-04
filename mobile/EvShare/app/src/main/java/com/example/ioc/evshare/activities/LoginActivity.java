@@ -1,4 +1,4 @@
-package com.example.ioc.evshare;
+package com.example.ioc.evshare.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.ioc.evshare.R;
 import com.example.ioc.evshare.network.api.AuthService.AuthRequest;
 import com.example.ioc.evshare.network.api.AuthService.AuthServiceManager;
 import com.example.ioc.evshare.network.api.UserService.UserServiceManager;

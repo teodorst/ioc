@@ -296,7 +296,7 @@ li a {
 
 .nav-pills > li.active > a, .btn-primary {
 	background-color: #3d868e !important;
-/ / feeling like it 's a rounded corners kind of day border-color: #6C6C6C !important;
+	border-color: #6C6C6C !important;
 	border-radius: 25px;
 }
 

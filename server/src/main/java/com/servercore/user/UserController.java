@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.servercore.authority.Authority;
+import com.servercore.authority.AuthorityName;
+import com.servercore.authority.AuthorityRepository;
 import com.servercore.jwt.JwtTokenUtil;
 import com.servercore.jwt.JwtUser;
 

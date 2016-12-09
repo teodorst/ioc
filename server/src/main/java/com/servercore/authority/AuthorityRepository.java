@@ -1,4 +1,4 @@
-package com.servercore.user;
+package com.servercore.authority;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

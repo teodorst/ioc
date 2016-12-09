@@ -1,4 +1,4 @@
-package com.servercore.user;
+package com.servercore.authority;
 
 import java.util.List;
 
@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.servercore.user.User;
 
 @Entity
 @Table(name = "AUTHORITY")

@@ -1,9 +1,5 @@
 package com.servercore;
 
-import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;

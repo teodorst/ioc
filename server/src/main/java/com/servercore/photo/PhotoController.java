@@ -56,6 +56,7 @@ public class PhotoController {
 					photoRepository.save(newPhoto);
 					
 					event.getPhotos().add(newPhoto);
+					eventRepository.save(event);
 				}
 				else {
 					photoRepository.delete(newPhoto);

@@ -51,12 +51,16 @@ public class UserController {
     	newUser.setEmail(request.getEmail());
     	newUser.setFirstname(request.getFirstName());
     	newUser.setLastname(request.getLastName());
-    	newUser.setUsername(request.getUsername());
     	newUser.setPassword(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()));
     	newUser.setEnabled(true);
     	Authority userAuthority = authorityRepository.findByName(AuthorityName.ROLE_USER);
     	newUser.setAuthorities(Collections.singletonList(userAuthority));
     	userRepository.save(newUser);
+    }
+    
+    @RequestMapping(value = "users", method = RequestMethod.GET)
+    public ListUserResponse getUsers() {
+    	return new ListUserResponse(userRepository.findAll());
     }
 
 }

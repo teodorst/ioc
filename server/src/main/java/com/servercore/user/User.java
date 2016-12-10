@@ -28,11 +28,6 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "USERNAME", length = 50, unique = true)
-	@NotNull
-	@Size(min = 4, max = 50)
-	private String username;
-
 	@Column(name = "PASSWORD", length = 100)
 	@NotNull
 	@Size(min = 4, max = 100)
@@ -71,14 +66,6 @@ public class User {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 
 	public String getPassword() {

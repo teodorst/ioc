@@ -21,7 +21,8 @@ public class PhotoController {
 		if (!file.isEmpty()) {
 			try {
 				byte[] fileContent = file.getBytes();
-				File serverFile = new File("test.jpg");
+				File eventDirectory = checkEventFolderOrCreateIt(eventId);
+				File serverFile = new File(eventDirectory.getAbsolutePath() + File.separator + "IMG_" + 100);
 				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
 				stream.write(fileContent);
 				stream.close();
@@ -32,6 +33,14 @@ public class PhotoController {
 		else {
 			throw new Exception("File is empty!");
 		}
+	}
+	
+	private File checkEventFolderOrCreateIt(String eventId) {
+		File dir = new File("events_photos/" + eventId);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		return dir;
 	}
 	
 }

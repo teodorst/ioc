@@ -76,6 +76,5 @@ public class Event {
 	public void setOwnerEmail(String ownerEmail) {
 		this.ownerEmail = ownerEmail;
 	}
-
 	
 }

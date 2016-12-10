@@ -2,8 +2,7 @@ package com.servercore.event;
 
 import java.security.Principal;
 
-import javax.websocket.server.PathParam;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +16,10 @@ public class EventController {
 	@Value("${jwt.header}")
     private String tokenHeader;    
     
+	@Autowired
+	private EventRepository eventRespository;
+	
+	
     @RequestMapping(value = "event", method = RequestMethod.POST)
     public void createEvent(@RequestBody CreateEventRequest request, Principal principal) {
     	Event newEvent = new Event();
@@ -24,6 +27,7 @@ public class EventController {
     	newEvent.setLocation(request.getLocation());
     	newEvent.setDate(request.getDate());
     	newEvent.setOwnerEmail(principal.getName());
+    	eventRespository.save(newEvent);
     }
     
     @RequestMapping(value = "event/{eventId}", method = RequestMethod.GET)

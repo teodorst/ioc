@@ -20,8 +20,8 @@ public class Photo {
 	@Column(name = "PATH")
 	private String photoPath;
 	
-	@Column(name = "USERID")
-	private Long userId;
+	@Column(name = "USEREMAIL")
+	private String userEmail;
 
 	public Long getId() {
 		return id;
@@ -39,13 +39,12 @@ public class Photo {
 		this.photoPath = photoPath;
 	}
 
-	public Long getUserId() {
-		return userId;
+	public String getUserEmail() {
+		return userEmail;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-	
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}	
 }
 

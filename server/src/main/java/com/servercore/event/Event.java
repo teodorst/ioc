@@ -11,10 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.servercore.photo.Photo;
 import com.servercore.user.User;
 
 @Entity
@@ -49,6 +51,10 @@ public class Event {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "USER_EVENT", joinColumns = { @JoinColumn(name = "EVENT_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "ID") })
 	private List<User> users;
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="event_photo", joinColumns = { @JoinColumn(name = "EVENT_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "PHOTO_ID", referencedColumnName = "ID") })
+	private List<Photo> photos;
 	
 	public Long getId() {
 		return id;
@@ -89,5 +95,21 @@ public class Event {
 	public void setOwnerEmail(String ownerEmail) {
 		this.ownerEmail = ownerEmail;
 	}
-	
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
+	public List<Photo> getPhotos() {
+		return photos;
+	}
+
+	public void setPhotos(List<Photo> photos) {
+		this.photos = photos;
+	}
+
 }

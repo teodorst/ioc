@@ -1,12 +1,21 @@
 package com.servercore.photo;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
 import java.security.Principal;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -54,7 +63,7 @@ public class PhotoController {
 					// update the path
 					newPhoto.setPhotoPath(localFilePath);
 					photoRepository.save(newPhoto);
-					
+					// add entry into event_photo table
 					event.getPhotos().add(newPhoto);
 					eventRepository.save(event);
 				}
@@ -70,6 +79,26 @@ public class PhotoController {
 		else {
 			throw new Exception("File is empty!");
 		}
+	}
+	
+	@RequestMapping(value = "event/{eventId}/photo/{photoId}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public void downloadPhoto(@PathVariable("eventId") Long eventId, @PathVariable("photoId") Long photoId, HttpServletResponse response) throws IOException {
+		
+		Photo photo = photoRepository.findById(photoId);
+		File photoFile = new File(photo.getPhotoPath());
+		String mimeType = URLConnection.guessContentTypeFromName(photoFile.getName());
+        if(mimeType==null){
+            System.out.println("mimetype is not detectable, will take default");
+            mimeType = "application/octet-stream";
+        }
+        
+        response.setContentType(mimeType);
+        response.setHeader("Content-Disposition", String.format("inline; filename=\"" + photoFile.getName() +"\""));
+        response.setContentLength((int)photoFile.length());
+        
+        InputStream inputStream = new BufferedInputStream(new FileInputStream(photoFile));
+        FileCopyUtils.copy(inputStream, response.getOutputStream());
+		
 	}
 	
 	private File checkEventFolderOrCreateIt(Long eventId) {

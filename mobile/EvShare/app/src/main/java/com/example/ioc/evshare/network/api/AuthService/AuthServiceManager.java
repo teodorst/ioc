@@ -21,7 +21,7 @@ public class AuthServiceManager {
     private AuthServiceManager() {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://private-84af3-evshare.apiary-mock.com")
+                .baseUrl("46.101.218.125")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

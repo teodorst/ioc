@@ -1,6 +1,7 @@
 package com.servercore.event;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,9 +60,18 @@ public class EventController {
 	}
 
 	@RequestMapping(value = "events", method = RequestMethod.GET)
-	public List<Event> getEvents(Principal principal) {
+	public ListEventsResponse getEvents(Principal principal) {
 		System.out.println("Principal   " + principal.getName());
-		return eventRepository.findByOwnerEmail(principal.getName());
+		List<Event> eventsFromDB = eventRepository.findByOwnerEmail(principal.getName());
+		List<GetEventResponse> events = new ArrayList<>();
+		for (Event event : eventsFromDB) {
+			events.add(convertEventToGetEventResponse(event));
+		}
+		ListEventsResponse response = new ListEventsResponse();
+		response.setEvents(events);
+		response.setTotalEvents(events.size());
+		
+		return response;
 	}
 
 	@RequestMapping(value = "event/{eventId}/invite")
@@ -96,4 +106,12 @@ public class EventController {
 		
 	}
 	
+	private GetEventResponse convertEventToGetEventResponse(Event event) {
+		GetEventResponse response = new GetEventResponse();
+		response.setName(event.getName());
+		response.setDate(event.getDate());
+		response.setLocation(event.getLocation());
+		response.setOwnerEmail(event.getOwnerEmail());
+		return response;
+	}
 }

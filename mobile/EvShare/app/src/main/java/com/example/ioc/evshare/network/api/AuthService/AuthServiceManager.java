@@ -50,7 +50,7 @@ public class AuthServiceManager {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
                 if (response.isSuccessful()) {
-                    bus.post(new AuthAction.OnLoadedSuccess(response.body().getAuthToken()));
+                    bus.post(new AuthAction.OnLoadedSuccess(response.body().getToken()));
                 }
                 else {
                     int statusCode = response.code();

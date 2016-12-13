@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.ioc.evshare.R;
+import com.example.ioc.evshare.network.NetworkManager;
 import com.example.ioc.evshare.network.api.AuthService.AuthRequest;
 import com.example.ioc.evshare.network.api.AuthService.AuthServiceManager;
 import com.example.ioc.evshare.network.api.UserService.UserServiceManager;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private EditText emailEditText;
     private EditText passwordEditText;
+    private NetworkManager networkManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,9 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = (Button) findViewById(R.id.login_button);
         emailEditText = (EditText) findViewById(R.id.login_activity_email_input);
         passwordEditText = (EditText) findViewById(R.id.login_activity_password_input);
+
+        // connect to network manager
+        networkManager = NetworkManager.getInstance();
 
         // set event listeners
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
     @Subscribe
     public void onLoadingFailed(AuthAction.OnLoadingError onLoadingFailed) {
         //try to fix or show a message
-        Log.d(TAG, "onLoadingFailed: here " + onLoadingFailed.getErrorMessage());
+        Log.d(TAG, "onLoadingFailed: " + onLoadingFailed.getErrorMessage());
         // i will show an invalid email and password combination
     }
 
@@ -152,6 +157,8 @@ public class LoginActivity extends AppCompatActivity {
     private void switchToEventsActivity(String authToken){
         Intent intent = new Intent(this, EventsActivity.class);
         intent.putExtra("AUTH_TOKEN", authToken);
+        networkManager.setToken(authToken);
+        Log.d(TAG, "switchToEventsActivity: Switching with token" + authToken);
         startActivity(intent);
     }
 

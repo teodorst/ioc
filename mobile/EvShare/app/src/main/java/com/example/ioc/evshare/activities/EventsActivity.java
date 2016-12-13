@@ -1,5 +1,6 @@
 package com.example.ioc.evshare.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,10 @@ import com.example.ioc.evshare.R;
 import com.example.ioc.evshare.adapters.EventsListAdapter;
 import com.example.ioc.evshare.listeners.EndlessScrollListener;
 import com.example.ioc.evshare.model.Event;
+import com.example.ioc.evshare.network.NetworkManager;
+import com.example.ioc.evshare.network.actionsBus.BusProvider;
+import com.example.ioc.evshare.network.actionsBus.actions.AuthAction;
+import com.example.ioc.evshare.network.actionsBus.actions.events.ListEventsAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +33,7 @@ public class EventsActivity extends AppCompatActivity
     private final static String TAG = "EventsActivity";
 
     private ListView eventsListView;
+    private NetworkManager networkManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +60,27 @@ public class EventsActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // connect to network manager
+        networkManager = NetworkManager.getInstance();
+
+        // get authToken
+        Intent intent = getIntent();
+        String authToken = intent.getStringExtra("AUTH_TOKEN");
+
         // connect to UI
         eventsListView = (ListView) findViewById(R.id.events_list);
         configureEventsList();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        BusProvider.bus().register(this);
+    }
+
+    @Override protected void onStop() {
+        super.onStop();
+        BusProvider.bus().unregister(this);
     }
 
     @Override
@@ -122,16 +146,17 @@ public class EventsActivity extends AppCompatActivity
 
         eventsListView.setAdapter(new EventsListAdapter(this, R.layout.events_list_item, getEventsForPage(0)));
 
-        // set on scrollListener
-        eventsListView.setOnScrollListener(new EndlessScrollListener() {
-            @Override
-            public boolean onLoadMore(int page, int totalItemCount) {
-                List<Event> newEvents = getEventsForPage(page);
-                EventsListAdapter adapter = (EventsListAdapter) eventsListView.getAdapter();
-                adapter.addAll(getEventsForPage(page));
-                return true;
-            }
-        });
+//        // set on scrollListener
+//        eventsListView.setOnScrollListener(new EndlessScrollListener() {
+//            @Override
+//            public boolean onLoadMore(int page, int totalItemCount) {
+//                List<Event> newEvents = getEventsForPage(page);
+//                EventsListAdapter adapter = (EventsListAdapter) eventsListView.getAdapter();
+//                adapter.addAll(getEventsForPage(page));
+//                return true;
+//            }
+//        });
+
 
 
     }
@@ -141,9 +166,8 @@ public class EventsActivity extends AppCompatActivity
 
         List<Event>eventsList = new ArrayList<Event>();
         Log.d(TAG, "getEventsForPage: Loading new Data!!");
-        for (int i = 0; i < 2000; i ++) {
-            eventsList.add(new Event("Page " + page + "name" + i, "location" + i, "date" + i));
-        }
+
+        BusProvider.bus().post(new ListEventsAction.OnLoadingStart());
 
         return eventsList;
     }

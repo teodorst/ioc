@@ -3,13 +3,13 @@ package com.example.ioc.evshare.network.api.AuthService;
 
 public class AuthResponse {
 
-    private String authToken;
+    private String token;
 
-    public String getAuthToken() {
-        return authToken;
+    public String getToken() {
+        return token;
     }
 
-    public void setAuthToken(String authToken) {
-        this.authToken = authToken;
+    public void setToken(String token) {
+        this.token = token;
     }
 }

@@ -1,9 +1,10 @@
 package com.example.ioc.evshare.network.actionsBus.actions.events;
 
 import com.example.ioc.evshare.model.Event;
+import com.example.ioc.evshare.network.actionsBus.actions.BaseNetworkEvent;
 import com.example.ioc.evshare.network.api.EventService.ListEventsResponse;
 
-public class ListEventsAction {
+public class ListEventsAction extends BaseNetworkEvent {
     public static final OnLoadingError FAILED_LIST_EVENTS_ACTION = new OnLoadingError(UNHANDLED_MSG, UNHANDLED_CODE);
 
     public static class OnLoadingStart extends OnStart<Void> {
@@ -12,8 +13,8 @@ public class ListEventsAction {
         }
     }
 
-    public static class OnLoadedSuccess extends OnDone<List<Event>> {
-        public OnLoadedSuccess(CreateUserResponse response) {
+    public static class OnLoadedSuccess extends OnDone<ListEventsResponse> {
+        public OnLoadedSuccess(ListEventsResponse response) {
             super(response);
         }
     }

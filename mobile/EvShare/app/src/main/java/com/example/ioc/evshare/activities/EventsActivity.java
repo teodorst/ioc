@@ -24,6 +24,9 @@ import com.example.ioc.evshare.network.NetworkManager;
 import com.example.ioc.evshare.network.actionsBus.BusProvider;
 import com.example.ioc.evshare.network.actionsBus.actions.AuthAction;
 import com.example.ioc.evshare.network.actionsBus.actions.events.ListEventsAction;
+import com.example.ioc.evshare.network.api.EventService.EventServiceManager;
+import com.example.ioc.evshare.network.api.EventService.GetEventResponse;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +65,8 @@ public class EventsActivity extends AppCompatActivity
 
         // connect to network manager
         networkManager = NetworkManager.getInstance();
+        EventServiceManager eventManager = EventServiceManager.getInstance();
+
 
         // get authToken
         Intent intent = getIntent();
@@ -145,7 +150,7 @@ public class EventsActivity extends AppCompatActivity
         // set adapter
 
         eventsListView.setAdapter(new EventsListAdapter(this, R.layout.events_list_item, getEventsForPage(0)));
-
+        getEventsForPage(10);
 //        // set on scrollListener
 //        eventsListView.setOnScrollListener(new EndlessScrollListener() {
 //            @Override
@@ -159,6 +164,27 @@ public class EventsActivity extends AppCompatActivity
 
 
 
+    }
+
+
+    @Subscribe public void onLoadingSuccesful(ListEventsAction.OnLoadedSuccess response) {
+        Log.d(TAG, "onLoadingSuccessful: " + response.getResponse().getEvents());
+        List<Event> events = new ArrayList<Event>();
+        for (GetEventResponse eventResponse : response.getResponse().getEvents()) {
+            events.add(convertGetEventResponseToEvent(eventResponse));
+        }
+        EventsListAdapter adapter = (EventsListAdapter) eventsListView.getAdapter();
+        adapter.addAll(events);
+    }
+
+    @Subscribe public void onLoadingFailed(ListEventsAction.OnLoadingError response) {
+        Log.d(TAG, "onLoadingError: " + response.getErrorMessage());
+    }
+
+
+
+    private Event convertGetEventResponseToEvent(GetEventResponse response) {
+        return new Event(response.getName(), response.getLocation(), response.getDate(), response.getOwnerEmail());
     }
 
     private List<Event> getEventsForPage(int page) {

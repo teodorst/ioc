@@ -16,12 +16,10 @@ public class GetEventResponse {
     private String location;
 
     @NonNull
-    private Date date;
+    private String date;
 
     @NonNull
-    private GetUserResponse owner;
-
-    private List<GetUserResponse> admins;
+    private String ownerEmail;
 
     public String getName() {
         return name;
@@ -41,28 +39,20 @@ public class GetEventResponse {
     }
 
     @NonNull
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(@NonNull Date date) {
+    public void setDate(@NonNull String date) {
         this.date = date;
     }
 
     @NonNull
-    public GetUserResponse getOwner() {
-        return owner;
+    public String getOwnerEmail() {
+        return ownerEmail;
     }
 
-    public void setOwner(@NonNull GetUserResponse owner) {
-        this.owner = owner;
-    }
-
-    public List<GetUserResponse> getAdmins() {
-        return admins;
-    }
-
-    public void setAdmins(List<GetUserResponse> admins) {
-        this.admins = admins;
+    public void setOwnerEmail(@NonNull String ownerEmail) {
+        this.ownerEmail = ownerEmail;
     }
 }

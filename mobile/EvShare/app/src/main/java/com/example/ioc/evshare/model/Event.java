@@ -5,11 +5,17 @@ public class Event {
     private String name;
     private String location;
     private String date;
+    private String ownerEmail;
 
-    public Event(String name, String location, String data) {
+    public Event() {
+
+    }
+
+    public Event(String name, String location, String data, String ownerEmail) {
         this.name = name;
         this.location = location;
         this.date = data;
+        this.ownerEmail = ownerEmail;
     }
 
     public String getDate() {
@@ -36,4 +42,11 @@ public class Event {
         this.name = name;
     }
 
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
+    }
 }

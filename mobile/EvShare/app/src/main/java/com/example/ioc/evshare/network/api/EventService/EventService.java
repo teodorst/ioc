@@ -17,6 +17,9 @@ public interface EventService {
     @GET("event/{eventId}")
     Call<GetEventResponse> getEvent(@Path("eventId") String eventId);
 
+    @GET("events")
+    Call<ListEventsResponse> getEvents(@Header("Authorization") String token);
+
     @Headers("Content-Type: application/json")
     @POST("event/{eventId}")
     Call<Void> updateEvent(@Path("eventId") String eventId, @Body CreateEventRequest requestBody);

@@ -113,8 +113,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void sendAuthRequest(String userEmail, String password) {
         AuthRequest requestBody = new AuthRequest();
-        requestBody.setEmail("ana@mere.com");
-        requestBody.setPassword("1234");
+        requestBody.setEmail("test@email.com");
+        requestBody.setPassword("test");
         BusProvider.bus().post(new AuthAction.OnLoadingStart(requestBody));
     }
 
@@ -128,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
     @Subscribe
     public void onLoadingFailed(AuthAction.OnLoadingError onLoadingFailed) {
         //try to fix or show a message
-        Log.d(TAG, "onLoadingFailed: " + onLoadingFailed.getErrorMessage());
+        Log.d(TAG, "onLoadingFailed: here " + onLoadingFailed.getErrorMessage());
         // i will show an invalid email and password combination
     }
 

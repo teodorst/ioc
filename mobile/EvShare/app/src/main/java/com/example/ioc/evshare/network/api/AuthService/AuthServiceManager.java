@@ -1,5 +1,7 @@
 package com.example.ioc.evshare.network.api.AuthService;
 
+import android.util.Log;
+
 import com.example.ioc.evshare.network.actionsBus.BusProvider;
 import com.example.ioc.evshare.network.actionsBus.actions.AuthAction;
 import com.squareup.otto.Bus;
@@ -21,7 +23,7 @@ public class AuthServiceManager {
     private AuthServiceManager() {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("46.101.218.125")
+                .baseUrl("http://46.101.218.125:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -60,6 +62,7 @@ public class AuthServiceManager {
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable error) {
                 if (error != null && error.getMessage() != null) {
+                    Log.d(TAG, "onFailure: " + error.getMessage());
                     bus.post(new AuthAction.OnLoadingError(error.getMessage(), -1));
                 } else {
                     bus.post(AuthAction.FAILED);

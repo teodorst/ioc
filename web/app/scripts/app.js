@@ -23,34 +23,35 @@ angular
 					abstract: true,
 					views: {
 						'': {
-							templateUrl: 'home.html',
+							templateUrl: '/templates/home.html',
 							controller: 'EvShareController as vm'
 						},
 						'profile@home': {
-							templateUrl: 'profile.html'
+							templateUrl: '/templates/profile.html'
 						}
 					}
 				})
 				.state('home.create', {
 					url: '/event',
-					templateUrl: 'createEvent.html'
+					templateUrl: '/templates/createEvent.html'
 				})
 				.state('home.show', {
 					url: '/show',
 					active: true,
-					templateUrl: 'showEvents.html'
+					templateUrl: '/templates/showEvents.html'
 				})
 				.state('home.show.event', {
 					url: '/:id',
-					templateUrl: 'event.html'
+					templateUrl: '/templates/event.html',
+					controller: 'EventController as vm'
 				})
 				.state('home.invite', {
 					url: '/invite',
-					templateUrl: 'inviteFriends.html'
+					templateUrl: '/templates/inviteFriends.html'
 				})
 				.state('home.upload', {
 					url: '/upload',
-					templateUrl: 'uploadPhoto.html'
+					templateUrl: '/templates/uploadPhoto.html'
 				})
 			;
 		}]);

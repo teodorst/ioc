@@ -19,16 +19,19 @@ function EvShareController($state, $stateParams, EventService) {
 	vm.createEvent = createEvent;
 	vm.events = [{
 		id: 1,
-		name: 'Interval'
-	}];
+		name: 'Interval 100 Cluj'
+	},
+		{
+			id: 2,
+			name: 'Interval 100'
+		},
+		{
+			id: 3,
+			name: 'Interval Natural'
+		}];
 	vm.selected = undefined;
 
-
-	_init();
-	function _init() {
-
-
-	}
+	vm.isInViewState = isInViewState;
 
 	function go(state) {
 		$state.go(state);
@@ -40,13 +43,13 @@ function EvShareController($state, $stateParams, EventService) {
 
 	function createEvent() {
 		EventService.createEvent(vm.event)
-			.then(function (id) {
-				vm.event.id = id;
-			})
-			.catch(function () {
-
+			.then(function () {
 			});
 
 		$state.go('home');
+	}
+
+	function isInViewState() {
+		return $state.params.id === undefined;
 	}
 }

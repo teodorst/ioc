@@ -1,14 +1,8 @@
 <ul class="nav nav-tabs col-xs-2" role="tablist">
-	<li><a href="#createEvent" role="tab" data-toggle="tab"> Create Event</a></li>
+	<li><a ui-view="createEvent"> Create Event</a></li>
 	<li><a ui-view="uploadPhoto">Upload photo</a></li>
 	<li><a ui-view="inviteFriends">Invite friends</a></li>
 	<li><a ui-view="showEvents">Show events</a></li>
 </ul>
-
-<div class="tab-content col-sm-10">
-	<div id="createEvent" class="tab-pane fade">
-		<div ui-view="createEvent"></div>
-	</div>
-</div>
 
 

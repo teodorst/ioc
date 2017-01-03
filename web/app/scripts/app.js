@@ -13,9 +13,6 @@ angular
 		'$stateProvider',
 		'$urlRouterProvider',
 		function ($stateProvider, $urlRouterProvider) {
-			// success login redirects to this state, so the application has to provide it's home url
-			// $urlRouterProvider.when(AuthConstants.APP_HOME_STATE_REDIRECT, '/search');
-
 			$urlRouterProvider.otherwise('/home/show');
 
 			$stateProvider
@@ -34,7 +31,7 @@ angular
 				})
 				.state('home.create', {
 					url: '/event',
-					templateUrl: '/templates/createEvent.html'
+					templateUrl: '/templates/login.html'
 				})
 				.state('home.show', {
 					url: '/show',
@@ -56,7 +53,12 @@ angular
 				})
 			;
 		}])
-	.constant('Url', {
-		API: ''
-	})
+	.constant('Constants', {
+		URL: {
+			API: 'http://46.101.218.125:8080'
+		},
+		AUTH: {
+			TOKEN: 'Auth'
+		}
+	});
 

@@ -2,7 +2,7 @@
 
 angular
 	.module('EvShare')
-	.factory('EventResource', ['$resource', function ($resource) {
+	.factory('EventResource', ['$resource', 'Constants', function ($resource, Constants) {
 		return $resource('http://46.101.218.125:8080/events', {}, {
 			'query': {
 				method: 'GET',
@@ -16,19 +16,19 @@ angular
 			},
 			'getEvent': {
 				method: 'GET',
-				url: 'http://46.101.218.125:8080/event/:id'
+				url: Constants.URL.API + '/event/:id'
 			},
 			'updateEvent': {
 				method: 'POST',
-				url: '/event/:id'
+				url: Constants.URL.API + '/event/:id'
 			},
 			'createEvent': {
 				method: 'POST',
-				url: 'http://46.101.218.125:8080/event'
+				url: Constants.URL.API + '/event'
 			},
 			'invite': {
 				method: 'POST',
-				url: 'http://46.101.218.125:8080/event/:id/invite'
+				url: Constants.URL.API + '/event/:id/invite'
 			}
 		});
 	}]);

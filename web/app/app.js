@@ -6,7 +6,8 @@ angular
 		'ngResource',
 		'myApp.version',
 		'ds.clock',
-		'ui.router'
+		'ui.router',
+		'ngMaterial'
 	])
 	.config([
 		'$stateProvider',
@@ -53,5 +54,8 @@ angular
 					templateUrl: 'uploadPhoto.html'
 				})
 			;
-		}]);
+		}])
+	.constant('Url', {
+		API: ''
+	})
 

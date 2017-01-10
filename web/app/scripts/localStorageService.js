@@ -5,7 +5,7 @@ angular
 .service('LocalStorage', ['$window', LocalStorage]);
 
 function LocalStorage($window) {
-	var storage = $window.localstorage();
+	var storage = $window.localStorage;
 
 	return {
 		get: get,

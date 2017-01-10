@@ -1,24 +1,35 @@
-<div layout="column" flex id="content" role="main">
-	<md-content layout="vertical" flex id="content">
-		<div layout="row" layout-align="center center" layout-fill>
-			<md-whiteframe class="md-whiteframe-z1" layout="column" flex="30" layout-padding>
-				<md-content md-theme="docs-dark">
+<md-content id="content" style="padding: 4em 2em">
+	<div layout="row" layout-align="center center" layout-fill>
+		<md-whiteframe class="md-whiteframe-z1" layout="column" flex="55" layout-padding>
+			<md-content>
+				<div layout="row" layout-align="center center">
 					<md-input-container>
 						<label>Email</label>
-						<input ng-model="user.email">
+						<input ng-model="vm.user">
 					</md-input-container>
+				</div>
+
+				<div layout="row" layout-align="center center">
 					<md-input-container>
 						<label>Password</label>
-						<input ng-model="user.password" type="password">
+						<input ng-model="vm.pass" type="password">
 					</md-input-container>
-					<md-input-container layout-align="center center">
+				</div>
+
+				<div layout="row" layout-align="center center">
+					<md-input-container>
 						<div layout="row" layout-sm="column" layout-margin>
-							<md-button class="md-raised" flex="50" flex-sm="100">Login</md-button>
-							<md-button class="md-raised md-primary" flex="50" flex-sm="100">Register</md-button>
+							<md-button class="md-raised" flex="50" flex-sm="100"
+							           ng-click="vm.login()">Login
+							</md-button>
+							<md-button class="md-raised md-primary" flex="50" flex-sm="100"
+							           ng-click="vm.register()">Register
+							</md-button>
 						</div>
 					</md-input-container>
-				</md-content>
-			</md-whiteframe>
-		</div>
-	</md-content>
-</div>
+				</div>
+			</md-content>
+		</md-whiteframe>
+	</div>
+</md-content>
+

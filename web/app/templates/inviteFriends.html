@@ -1,1 +1,41 @@
-<p>INVITE</p>
+<!--<form>-->
+<!--<md-autocomplete-->
+<!--md-selected-item="vm.selectedUser"-->
+<!--md-search-text="vm.user"-->
+<!--md-items="user in vm.users"-->
+<!--md-item-text="user"-->
+<!--placeholder="Search by email">-->
+<!--<md-item-template>-->
+<!--<span md-highlight-text="vm.user" md-highlight-flags="^i">{{user}}</span>-->
+<!--</md-item-template>-->
+<!--</md-autocomplete>-->
+
+<!--<md-button ></md-button>-->
+<!--</form>-->
+
+<!--<md-content>-->
+<!--<div layout="row" layout-align="center center" layout-padding>-->
+<!--<span>Selected friends: </span>-->
+<!--<div ng-repeat="user in vm.selectedUsers">-->
+<!--<span>{{user}}</span>-->
+<!--</div>-->
+<!--</div>-->
+<!--</md-content>-->
+
+<div layout="column" class="contacts">
+	<md-content class="md-padding autocomplete" layout="column">
+		<md-contact-chips ng-model="vm.asyncContacts" md-contacts="vm.delayedQuerySearch($query)"
+		                  md-contact-name="name" md-contact-email="email"
+		                  md-require-match="true" md-highlight-flags="i" filter-selected="true"
+		                  placeholder="To">
+		</md-contact-chips>
+	</md-content>
+</div>
+
+<!--
+Copyright 2016 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
+-->
+
+
+

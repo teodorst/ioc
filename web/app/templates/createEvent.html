@@ -1,21 +1,33 @@
-<form>
-	<div class="form-group">
-		<label>Name: </label>
-		<input type="text" class="form-control" id="name"
-		       ng-model="vm.event.name">
-	</div>
-	<div class="form-group">
-		<label>Location: </label>
-		<input type="text" class="form-control" id="loc"
-		       ng-model="vm.event.location">
-	</div>
-	<div class="form-group">
-		<label>Date: </label>
-		<input type="date" class="form-control" id="date"
-		       ng-model="vm.event.date">
-	</div>
-	<div class="form-group col-xs-2 offset-xs-10">
-		<input type="submit" ng-click="vm.createEvent()">
+<md-content>
+	<div layout="row" layout-align="center center" layout-padding>
+		<md-input-container>
+			<label>Name: </label>
+			<input ng-model="vm.event.name">
+		</md-input-container>
 	</div>
 
-</form>
+	<div layout="row" layout-align="center center" layout-padding>
+		<md-input-container>
+			<label>Location: </label>
+			<input ng-model="vm.event.location">
+		</md-input-container>
+	</div>
+
+	<div layout="row" layout-align="center center" layout-padding>
+		<md-input-container>
+			<label>Date: </label>
+			<md-datepicker ng-model="vm.event.date"></md-datepicker>
+		</md-input-container>
+	</div>
+
+	<div layout="row" layout-align="center center">
+		<md-input-container>
+			<div layout="row" layout-sm="column">
+				<md-button class="md-raised md-primary" flex="50" flex-sm="100"
+				           ng-click="vm.createEvent()">Submit
+				</md-button>
+			</div>
+		</md-input-container>
+	</div>
+</md-content>
+

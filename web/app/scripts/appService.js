@@ -2,7 +2,7 @@
 
 angular
 	.module('EvShare')
-	.service('EventService', ['EventResource', function (EventResource) {
+	.service('EventService', ['EventResource', 'Constants', '$http', function (EventResource, Constants, $http) {
 		return {
 			createEvent: createEvent,
 			getEvents: getEvents,
@@ -11,11 +11,15 @@ angular
 		};
 
 		function createEvent(event) {
-			return EventResource
-				.createEvent({name: event.name,
-					location: event.location,
-					date: event.date.toLocaleString()})
-				.$promise;
+			// return EventResource
+			// 	.createEvent({name: event.name,
+			// 		location: event.location,
+			// 		date: event.date.toDateString()})
+			// 	.$promise;
+
+			return $http.post(Constants.URL.API + '/event', {name: event.name,
+						location: event.location,
+						date: event.date.toDateString()});
 		}
 
 		function getEvents() {

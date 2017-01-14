@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.example.ioc.evshare.network.api.UserService.CreateUserRequest;
 
-public class CreateUseActionMessage {
+public class CreateUserActionMessage {
 
     @NonNull
     private CreateUserRequest requestBody;

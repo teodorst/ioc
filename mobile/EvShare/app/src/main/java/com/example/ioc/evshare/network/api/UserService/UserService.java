@@ -13,7 +13,7 @@ public interface UserService {
 
     @Headers("Content-Type: application/json")
     @POST("user/register")
-    Call<CreateUserResponse> createUser(@Body CreateUserRequest createUserRequest);
+    Call<Void> createUser(@Body CreateUserRequest createUserRequest);
 
 
     @Headers("Content-Type: application/json")

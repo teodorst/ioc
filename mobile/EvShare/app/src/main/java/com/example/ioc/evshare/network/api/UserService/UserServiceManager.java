@@ -24,7 +24,7 @@ public class UserServiceManager {
 
     private UserServiceManager() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://private-84af3-evshare.apiary-mock.com")
+                .baseUrl("http://46.101.218.125:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -44,22 +44,21 @@ public class UserServiceManager {
 
     @Subscribe
     public void createUser(CreateUserAction.OnLoadingStart onLoadingStartMessage) {
-        Call<CreateUserResponse> call = userServiceAPI.createUser(onLoadingStartMessage.getMessage().getRequestBody());
-        call.enqueue(new Callback<CreateUserResponse>() {
+        Call<Void> call = userServiceAPI.createUser(onLoadingStartMessage.getMessage().getRequestBody());
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<CreateUserResponse> call, Response<CreateUserResponse> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    bus.post(new CreateUserAction.OnLoadedSuccess(response.body()));
+                    bus.post(new CreateUserAction.OnLoadedSuccess());
                 } else {
                     int statusCode = response.code();
                     ResponseBody errorBody = response.errorBody();
                     bus.post(new CreateUserAction.OnLoadingError(errorBody.toString(), statusCode));
                 }
-
             }
 
             @Override
-            public void onFailure(Call<CreateUserResponse> call, Throwable error) {
+            public void onFailure(Call<Void> call, Throwable error) {
                 if (error != null && error.getMessage() != null) {
                     bus.post(new CreateUserAction.OnLoadingError(error.getMessage(), -1));
                 } else {

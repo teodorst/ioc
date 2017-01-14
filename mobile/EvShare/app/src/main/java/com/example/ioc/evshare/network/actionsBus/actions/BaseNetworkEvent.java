@@ -36,6 +36,9 @@ public class BaseNetworkEvent {
 
     }
 
+    protected static class OnDoneWithoutResponse {
+
+    }
 
     protected static class OnFailed {
 

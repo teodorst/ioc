@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.ioc.evshare.R;
 import com.example.ioc.evshare.network.NetworkManager;
@@ -28,14 +29,13 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
     private NetworkManager networkManager;
+    private TextView createUserMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // connect to bus event
-//        BusProvider.bus().register(this);
         AuthServiceManager authService = AuthServiceManager.getInstance();
         UserServiceManager userService = UserServiceManager.getInstance();
 
@@ -43,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = (Button) findViewById(R.id.login_button);
         emailEditText = (EditText) findViewById(R.id.login_activity_email_input);
         passwordEditText = (EditText) findViewById(R.id.login_activity_password_input);
+        createUserMessage = (TextView) findViewById(R.id.create_user_message);
+
 
         // connect to network manager
         networkManager = NetworkManager.getInstance();
@@ -63,10 +65,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        createUserMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchToCreateUserActivity();
+            }
+        });
+
 //        loginButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                CreateUseActionMessage createUserEventMessage = new CreateUseActionMessage();
+//                CreateUserActionMessage createUserEventMessage = new CreateUserActionMessage();
 //                CreateUserRequest createUserRequest = new CreateUserRequest();
 //                createUserRequest.setEmail("Teodorstefu@gmail.com");
 //                createUserRequest.setPassword("ana-are-mere");
@@ -162,17 +171,21 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-
-
-    // TEST SUBSCRIBERS
-    @Subscribe public void onLoadingSuccesful(CreateUserAction.OnLoadedSuccess response) {
-        Log.d(TAG, "onLoadingSuccessful: " + response.getResponse().getId());
+    private void switchToCreateUserActivity() {
+        Intent intent = new Intent(this, CreateUserActivity.class);
+        startActivity(intent);
     }
 
-    @Subscribe public void onLoadingFailed(CreateUserAction.OnLoadingError response) {
-        Log.d(TAG, "onLoadingError: " + response.getErrorMessage());
-    }
+
+
+//    // TEST SUBSCRIBERS
+//    @Subscribe public void onLoadingSuccesful(CreateUserAction.OnLoadedSuccess response) {
+//        Log.d(TAG, "onLoadingSuccessful: " + response.getResponse().getId());
+//    }
+//
+//    @Subscribe public void onLoadingFailed(CreateUserAction.OnLoadingError response) {
+//        Log.d(TAG, "onLoadingError: " + response.getErrorMessage());
+//    }
 
 
     @Subscribe public void onLoadingFailed(GetUserAction.OnLoadingError response) {
@@ -190,4 +203,7 @@ public class LoginActivity extends AppCompatActivity {
     @Subscribe public void onLoadingSuccessful(ListUsersAction.OnLoadingSuccessful response) {
         Log.d(TAG, "onLoadingSuccessful: " + response.getResponse().getTotalNumber());
     }
+
+
+
 }

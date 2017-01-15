@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,6 +45,7 @@ public class UserController {
         return user;
     }
     
+	@CrossOrigin
     @RequestMapping(value = "user", method = RequestMethod.POST)
     public void createUser(@RequestBody CreateUserRequest request) {
     	System.out.println(request.getEmail());
@@ -58,6 +60,7 @@ public class UserController {
     	userRepository.save(newUser);
     }
     
+	@CrossOrigin
     @RequestMapping(value = "users", method = RequestMethod.GET)
     public ListUserResponse getUsers() {
     	return new ListUserResponse(userRepository.findAll());

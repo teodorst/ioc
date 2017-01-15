@@ -64,6 +64,7 @@ public class EventController {
 		return response;
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "events", method = RequestMethod.GET)
 	public ListEventsResponse getEvents(Principal principal) {
 		System.out.println("Principal   " + principal.getName());
@@ -79,6 +80,7 @@ public class EventController {
 		return response;
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "event/{eventId}/invite")
 	public void inviteUsersToEvent(@PathVariable Long eventId, @RequestBody EventInviteUsersRequest request) throws InvalidRequestException {
 		validateEventInviteUsersRequest(request);
@@ -101,6 +103,7 @@ public class EventController {
 		// update db
 		eventRepository.save(event);
 	}
+	
 	
 	private void validateEventInviteUsersRequest(EventInviteUsersRequest request) throws InvalidRequestException {
 		List<String> usersEmails = request.getUsersEmails();

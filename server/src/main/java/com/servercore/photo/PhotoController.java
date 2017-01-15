@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +36,7 @@ public class PhotoController {
 	@Autowired
 	private EventRepository eventRepository;
 	
+	@CrossOrigin
 	@RequestMapping(value = "event/{eventId}/photo", method = RequestMethod.POST)
 	public void uploadPhoto(@PathVariable("eventId") Long eventId, @RequestParam("file") MultipartFile file, Principal user) throws Exception {
 		
@@ -81,6 +83,8 @@ public class PhotoController {
 		}
 	}
 	
+	
+	@CrossOrigin
 	@RequestMapping(value = "event/{eventId}/photo/{photoId}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public void downloadPhoto(@PathVariable("eventId") Long eventId, @PathVariable("photoId") Long photoId, HttpServletResponse response) throws IOException {
 		

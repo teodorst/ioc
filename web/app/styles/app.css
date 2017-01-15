@@ -1,5 +1,13 @@
 /* app css stylesheet */
 
+html {
+	background-color: white !important;
+}
+
+.move-down-25vh {
+	margin-top: 25vh;
+}
+
 .menu {
 	list-style: none;
 	border-bottom: 0.1em solid black;
@@ -31,6 +39,10 @@
 
 .move-down {
 	margin-top: 100px;
+}
+
+.move-down-55 {
+	margin-top: 55px;
 }
 
 .row-height-20 {
@@ -299,4 +311,47 @@ li a {
 	border-color: #6C6C6C !important;
 	border-radius: 25px;
 }
+
+/*invite friends*/
+
+.contacts md-content.autocomplete {
+	min-height: 250px; }
+.contacts md-content.autocomplete input {
+	min-width: 400px; }
+
+.contacts .md-item-text.compact {
+	padding-top: 8px;
+	padding-bottom: 8px; }
+
+.contacts .contact-item {
+	box-sizing: border-box; }
+.contacts .contact-item.selected {
+	opacity: 0.5; }
+.contacts .contact-item.selected h3 {
+	opacity: 0.5; }
+.contacts .contact-item .md-list-item-text {
+	padding: 14px 0;
+	max-width: 190px; }
+.contacts .contact-item .md-list-item-text h3 {
+	margin: 0 !important;
+	padding: 0;
+	line-height: 1.2em !important; }
+.contacts .contact-item .md-list-item-text h3, .contacts .contact-item .md-list-item-text p {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden; }
+@media (min-width: 960px) {
+	.contacts .contact-item {
+		float: left;
+		width: 33%; } }
+
+.contacts md-contact-chips {
+	margin-bottom: 10px; }
+
+.contacts .md-chips {
+	padding: 5px 0 8px; }
+
+.contacts .fixedRows {
+	height: 250px;
+	overflow: hidden; }
 

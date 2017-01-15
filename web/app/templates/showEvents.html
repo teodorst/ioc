@@ -1,0 +1,5 @@
+<div ng-repeat="event in vm.events" ng-if="vm.isInViewState()">
+	<a class="center-block" href ui-sref=".event({id: event.id})">{{event.name}} </a>
+</div>
+
+<div ui-view></div>

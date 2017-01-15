@@ -1,0 +1,25 @@
+<div layout="column" class="contacts">
+	<md-content class="md-padding autocomplete" layout="column">
+		<md-contact-chips ng-model="vm.selectedUsers" md-contacts="vm.searchUser($query)"
+		                  md-contact-name="name" md-contact-email="email"
+		                  md-require-match="true" md-highlight-flags="i" filter-selected="true"
+		                  placeholder="Search user">
+		</md-contact-chips>
+
+		<md-list style="overflow: scroll; height: 300px;">
+			<md-subheader class="md-no-sticky">Events</md-subheader>
+			<md-list-item ng-repeat="event in vm.events">
+				<p>{{event.name}}</p>
+				<md-checkbox class="md-secondary" ng-model="event.selected"></md-checkbox>
+			</md-list-item>
+		</md-list>
+	</md-content>
+
+	<div layout="column" layout-align="center center">
+		<md-button class="md-raised md-primary" ng-click="vm.invite()">Invite</md-button>
+	</div>
+</div>
+
+
+
+

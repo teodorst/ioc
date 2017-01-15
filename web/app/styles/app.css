@@ -307,7 +307,7 @@ li a {
 }
 
 .nav-pills > li.active > a, .btn-primary {
-	background-color: #3d868e !important;
+	background-color: rgb(85, 102, 195) !important;
 	border-color: #6C6C6C !important;
 	border-radius: 25px;
 }

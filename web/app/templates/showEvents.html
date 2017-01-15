@@ -1,5 +1,8 @@
-<div ng-repeat="event in vm.events" ng-if="vm.isInViewState()">
-	<a class="center-block" href ui-sref=".event({id: event.id})">{{event.name}} </a>
-</div>
+<p ng-if="vm.isInViewState()">Choose event:</p>
+<md-list style="overflow: scroll; height: 300px;" ng-if="vm.isInViewState()">
+	<div ng-repeat="event in vm.events">
+		<a class="center-block" href ui-sref=".event({id: event.id})">{{event.name}} </a>
+	</div>
+</md-list>
 
 <div ui-view></div>

@@ -9,7 +9,8 @@ angular
 			getEvent: getEvent,
 			updateEvent: updateEvent,
 			getUsers: getUsers,
-			inviteFriends: inviteFriends
+			inviteFriends: inviteFriends,
+			uploadPhoto: uploadPhoto
 		};
 
 		function createEvent(event) {
@@ -42,5 +43,9 @@ angular
 
 		function inviteFriends(eventId, users) {
 			return EventResource.inviteFriends({eventId: eventId}, users).$promise;
+		}
+
+		function uploadPhoto(eventId, fileName) {
+			return EventResource.uploadPhoto({eventId: eventId}, fileName).$promise;
 		}
 	}]);

@@ -16,6 +16,8 @@ function EventController(EventService, $state) {
 		location: 'Form Space Cluj-Napoca',
 		date: new Date()
 	};
+
+	vm.go = go;
 	
 	//_init();
 	
@@ -24,5 +26,9 @@ function EventController(EventService, $state) {
 			.then(function (event) {
 				vm.event = event;
 			});
+	}
+
+	function go(state) {
+		$state.go(state);
 	}
 }

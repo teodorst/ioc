@@ -26,6 +26,10 @@ angular
 			'getUsers': {
 				method: 'GET',
 				url: Constants.URL.API + '/users'
+			},
+			'uploadPhoto': {
+				method: 'POST',
+				url: Constants.URL.API + 'event/:eventId/photo'
 			}
 		});
 	}]);

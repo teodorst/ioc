@@ -15,8 +15,8 @@ angular
 			$httpProvider.defaults.headers.common.Accept = 'application/json';
 			$httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
 			$httpProvider.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-			// $httpProvider.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PATCH, PUT, DELETE, OPTIONS';
-			// $httpProvider.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token';
+			$httpProvider.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PATCH, PUT, DELETE, OPTIONS';
+			$httpProvider.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token';
 		}])
 
 	.config(['$httpProvider', function ($httpProvider) {
@@ -103,6 +103,10 @@ angular
 				})
 				.state('home.upload', {
 					url: '/upload',
+					templateUrl: '/templates/showEvents.html'
+				})
+				.state('home.upload.event', {
+					url: '/:id',
 					templateUrl: '/templates/uploadPhoto.html'
 				})
 			;

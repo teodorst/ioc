@@ -61,6 +61,16 @@ angular
 			$urlRouterProvider.otherwise('/home/show');
 
 			$stateProvider
+				.state('login', {
+					url: '/login',
+					templateUrl: '/templates/login.html',
+					controller: 'SecurityController as vm'
+				})
+				.state('register', {
+					url: '/register',
+					templateUrl: '/templates/register.html',
+					controller: 'SecurityController as vm'
+				})
 				.state('home', {
 					url: '/home',
 					views: {
@@ -72,11 +82,6 @@ angular
 							templateUrl: '/templates/profile.html'
 						}
 					}
-				})
-				.state('login', {
-					url: '/login',
-					templateUrl: '/templates/login.html',
-					controller: 'SecurityController as vm'
 				})
 				.state('home.create', {
 					url: '/event',

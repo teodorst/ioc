@@ -14,15 +14,12 @@ function SecurityController(SecurityService, LocalStorage, Constants, $state) {
 
 	vm.user = undefined;
 	vm.pass = undefined;
-
-	vm.firstName = undefined;
-	vm.lastName = undefined;
-	vm.registerPass = undefined;
-	vm.email = undefined;
+	vm.registerUser = {};
 
 	vm.login = login;
 	vm.register = register;
 	vm.isState = isState;
+	vm.goTo = goTo;
 
 	function login() {
 		 LocalStorage.put(Constants.AUTH.TOKEN,
@@ -36,11 +33,20 @@ function SecurityController(SecurityService, LocalStorage, Constants, $state) {
 	}
 
 	function register() {
-		return SecurityService.register({email: vm.email, firstName: vm.firstName,
-			lastName: vm.lastName, password: vm.registerPass});
+		return SecurityService.register(vm.registerUser)
+			.then(function () {
+				// goTo('login');
+			})
+			.catch(function (response) {
+				goTo('login');
+			});
 	}
 
 	function isState(state) {
 		return $state.includes(state);
+	}
+
+	function goTo(state) {
+		return $state.go(state);
 	}
 }

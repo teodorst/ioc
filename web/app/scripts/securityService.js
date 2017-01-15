@@ -30,7 +30,7 @@ function SecurityService($http, LocalStorage, Constants, $state, SecurityResourc
 	}
 
 	function register(credentials) {
-		return $http.post(Constants.URL.API + '/user', credentials);
+		return SecurityResource.register(credentials).$promise;
 	}
 
 	function logout() {

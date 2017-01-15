@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,8 @@ public class EventController {
 	
 	@Autowired
 	private UserRepository userRepository;
-
+	
+	@CrossOrigin
 	@RequestMapping(value = "event", method = RequestMethod.POST)
 	public GetEventResponse createEvent(@RequestBody CreateEventRequest request, Principal principal) {
 		
@@ -48,7 +50,8 @@ public class EventController {
 		GetEventResponse newEventResponse = convertEventToGetEventResponse(newEvent);
 		return newEventResponse;
 	}
-
+	
+	@CrossOrigin
 	@RequestMapping(value = "event/{eventId}", method = RequestMethod.GET)
 	public GetEventResponse getEvent(@PathVariable Long eventId, Principal principal) {
 		GetEventResponse response = new GetEventResponse();

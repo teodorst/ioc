@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.ioc.evshare.R;
@@ -149,21 +150,13 @@ public class EventsActivity extends AppCompatActivity
     private void configureEventsList() {
         // set adapter
 
-        eventsListView.setAdapter(new EventsListAdapter(this, R.layout.events_list_item, getEventsForPage(0)));
-        getEventsForPage(10);
-//        // set on scrollListener
-//        eventsListView.setOnScrollListener(new EndlessScrollListener() {
-//            @Override
-//            public boolean onLoadMore(int page, int totalItemCount) {
-//                List<Event> newEvents = getEventsForPage(page);
-//                EventsListAdapter adapter = (EventsListAdapter) eventsListView.getAdapter();
-//                adapter.addAll(getEventsForPage(page));
-//                return true;
-//            }
-//        });
-
-
-
+        eventsListView.setAdapter(new EventsListAdapter(this, R.layout.events_list_item, getEvents()));
+        eventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemClick: " + position);
+            }
+        });
     }
 
 
@@ -187,15 +180,14 @@ public class EventsActivity extends AppCompatActivity
         return new Event(response.getName(), response.getLocation(), response.getDate(), response.getOwnerEmail());
     }
 
-    private List<Event> getEventsForPage(int page) {
+    private List<Event> getEvents() {
         // test
 
-        List<Event>eventsList = new ArrayList<Event>();
         Log.d(TAG, "getEventsForPage: Loading new Data!!");
 
         BusProvider.bus().post(new ListEventsAction.OnLoadingStart());
 
-        return eventsList;
+        return new ArrayList<Event>();
     }
 
 

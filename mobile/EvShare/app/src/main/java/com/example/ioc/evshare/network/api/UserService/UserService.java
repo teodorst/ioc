@@ -12,7 +12,7 @@ import retrofit2.http.Query;
 public interface UserService {
 
     @Headers("Content-Type: application/json")
-    @POST("user/register")
+    @POST("user")
     Call<Void> createUser(@Body CreateUserRequest createUserRequest);
 
 

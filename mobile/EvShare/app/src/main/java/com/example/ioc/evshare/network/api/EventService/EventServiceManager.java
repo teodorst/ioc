@@ -2,7 +2,9 @@ package com.example.ioc.evshare.network.api.EventService;
 
 import com.example.ioc.evshare.network.NetworkManager;
 import com.example.ioc.evshare.network.actionsBus.BusProvider;
+import com.example.ioc.evshare.network.actionsBus.actions.events.CreateEventAction;
 import com.example.ioc.evshare.network.actionsBus.actions.events.ListEventsAction;
+import com.example.ioc.evshare.network.actionsBus.actions.user.CreateUserAction;
 import com.example.ioc.evshare.network.api.UserService.UserService;
 import com.example.ioc.evshare.network.api.UserService.UserServiceManager;
 import com.squareup.otto.Bus;
@@ -67,6 +69,32 @@ public class EventServiceManager {
                     bus.post(new ListEventsAction.OnLoadingError(error.getMessage(), -1));
                 } else {
                     bus.post(ListEventsAction.FAILED_LIST_EVENTS_ACTION);
+                }
+            }
+        });
+    }
+
+
+    @Subscribe void createEvents(CreateEventAction.OnLoadingStart onloadingStartMessage) {
+        Call<CreateEventResponse> call = eventServiceAPI.createEvent(onloadingStartMessage.getMessage().getRequestBody());
+        call.enqueue(new Callback<CreateEventResponse>() {
+            @Override
+            public void onResponse(Call<CreateEventResponse> call, Response<CreateEventResponse> response) {
+                if (response.isSuccessful()) {
+                    bus.post(new CreateUserAction.OnLoadedSuccess(response.body()));
+                } else {
+                    int statusCode = response.code();
+                    ResponseBody errorBody = response.errorBody();
+                    bus.post(new ListEventsAction.OnLoadingError(errorBody.toString(), statusCode));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreateEventResponse> call, Throwable error) {
+                if (error != null && error.getMessage() != null) {
+                    bus.post(new CreateEventAction.OnLoadingError(error.getMessage(), -1));
+                } else {
+                    bus.post(CreateUserAction.FAILED_CREATE_USER_EVENT);
                 }
             }
         });

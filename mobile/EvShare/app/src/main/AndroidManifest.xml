@@ -26,6 +26,14 @@
         <activity
             android:name=".activities.CreateUserActivity"
             android:label="@string/title_activity_create_user"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.EventActivity"
+            android:label="@string/title_activity_event"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.CreateEventActivity"
+            android:label="@string/title_activity_create_event"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

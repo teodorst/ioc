@@ -1,5 +1,6 @@
 package com.example.ioc.evshare.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -86,6 +87,8 @@ public class CreateUserActivity extends AppCompatActivity {
 
     @Subscribe public void onLoadingSuccesful(CreateUserAction.OnLoadedSuccess response) {
         Log.d(TAG, "onLoadingSuccessful: " + response.toString());
+        Intent loginActivityIntent = new Intent(this, LoginActivity.class);
+        startActivity(loginActivityIntent);
     }
 
     @Subscribe

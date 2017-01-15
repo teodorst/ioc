@@ -127,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void sendAuthRequest(String userEmail, String password) {
         AuthRequest requestBody = new AuthRequest();
-        requestBody.setEmail("test@email.com");
+        requestBody.setEmail("android@test.com");
         requestBody.setPassword("test");
         BusProvider.bus().post(new AuthAction.OnLoadingStart(requestBody));
     }

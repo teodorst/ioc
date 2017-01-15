@@ -1,6 +1,7 @@
 package com.example.ioc.evshare.network.actionsBus.actions.user;
 
 import com.example.ioc.evshare.network.actionsBus.actions.user.message.CreateUserActionMessage;
+import com.example.ioc.evshare.network.api.EventService.CreateEventResponse;
 import com.example.ioc.evshare.network.api.UserService.CreateUserResponse;
 import com.example.ioc.evshare.network.actionsBus.actions.BaseNetworkEvent;
 
@@ -14,9 +15,9 @@ public class CreateUserAction extends BaseNetworkEvent {
         }
     }
 
-    public static class OnLoadedSuccess extends OnDoneWithoutResponse {
-        public OnLoadedSuccess() {
-            super();
+    public static class OnLoadedSuccess extends OnDone<CreateEventResponse> {
+        public OnLoadedSuccess(CreateEventResponse response) {
+            super(response);
         }
     }
 

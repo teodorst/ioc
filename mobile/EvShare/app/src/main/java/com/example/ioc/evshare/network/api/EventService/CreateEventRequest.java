@@ -14,12 +14,12 @@ public class CreateEventRequest {
     private String location;
 
     @NonNull
-    private Date date;
+    private String date;
 
-    @NonNull
-    private String ownerId;
+//    @NonNull
+//    private String ownerId;
 
-    private List<String> admins;
+//    private List<String> admins;
     
     @NonNull
     public String getName() {
@@ -40,28 +40,28 @@ public class CreateEventRequest {
     }
 
     @NonNull
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(@NonNull Date date) {
+    public void setDate(@NonNull String date) {
         this.date = date;
     }
 
-    @NonNull
-    public String getOwnerId() {
-        return ownerId;
-    }
+//    @NonNull
+//    public String getOwnerId() {
+//        return ownerId;
+//    }
 
-    public void setOwnerId(@NonNull String ownerId) {
-        this.ownerId = ownerId;
-    }
+//    public void setOwnerId(@NonNull String ownerId) {
+//        this.ownerId = ownerId;
+//    }
 
-    public List<String> getAdmins() {
-        return admins;
-    }
-
-    public void setAdmins(List<String> admins) {
-        this.admins = admins;
-    }
+//    public List<String> getAdmins() {
+//        return admins;
+//    }
+//
+//    public void setAdmins(List<String> admins) {
+//        this.admins = admins;
+//    }
 }

@@ -30,7 +30,7 @@ public class EventController {
 	private UserRepository userRepository;
 
 	@RequestMapping(value = "event", method = RequestMethod.POST)
-	public void createEvent(@RequestBody CreateEventRequest request, Principal principal) {
+	public GetEventResponse createEvent(@RequestBody CreateEventRequest request, Principal principal) {
 		
 		User owner = userRepository.findByEmail(principal.getName());
 		if (owner == null) {
@@ -45,6 +45,8 @@ public class EventController {
 		newEvent.setOwnerEmail(principal.getName());
 		newEvent.setUsers(eventUsers);
 		eventRepository.save(newEvent);
+		GetEventResponse newEventResponse = convertEventToGetEventResponse(newEvent);
+		return newEventResponse;
 	}
 
 	@RequestMapping(value = "event/{eventId}", method = RequestMethod.GET)

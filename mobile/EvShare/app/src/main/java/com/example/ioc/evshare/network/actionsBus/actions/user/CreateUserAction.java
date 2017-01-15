@@ -15,9 +15,9 @@ public class CreateUserAction extends BaseNetworkEvent {
         }
     }
 
-    public static class OnLoadedSuccess extends OnDone<CreateEventResponse> {
-        public OnLoadedSuccess(CreateEventResponse response) {
-            super(response);
+    public static class OnLoadedSuccess extends OnDoneWithoutResponse {
+        public OnLoadedSuccess() {
+            super();
         }
     }
 

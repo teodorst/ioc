@@ -12,7 +12,7 @@ public interface EventService {
 
     @Headers("Content-Type: application/json")
     @POST("event")
-    Call<CreateEventResponse> createEvent(@Body CreateEventRequest createEventRequest);
+    Call<CreateEventResponse> createEvent(@Header("Authorization") String token, @Body CreateEventRequest createEventRequest);
 
     @GET("event/{eventId}")
     Call<GetEventResponse> getEvent(@Path("eventId") String eventId);

@@ -24,6 +24,7 @@ public class EventServiceManager {
     private EventService eventServiceAPI;
     private Bus bus;
     private NetworkManager networkManager;
+    private String token;
 
     private EventServiceManager() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -38,6 +39,7 @@ public class EventServiceManager {
         bus.register(this);
 
         networkManager = NetworkManager.getInstance();
+        token = networkManager.getToken();
 
     }
 
@@ -76,16 +78,16 @@ public class EventServiceManager {
 
 
     @Subscribe void createEvents(CreateEventAction.OnLoadingStart onloadingStartMessage) {
-        Call<CreateEventResponse> call = eventServiceAPI.createEvent(onloadingStartMessage.getMessage().getRequestBody());
+        Call<CreateEventResponse> call = eventServiceAPI.createEvent(token, onloadingStartMessage.getMessage().getRequestBody());
         call.enqueue(new Callback<CreateEventResponse>() {
             @Override
             public void onResponse(Call<CreateEventResponse> call, Response<CreateEventResponse> response) {
                 if (response.isSuccessful()) {
-                    bus.post(new CreateUserAction.OnLoadedSuccess(response.body()));
+                    bus.post(new CreateEventAction.OnLoadedSuccess(response.body()));
                 } else {
                     int statusCode = response.code();
                     ResponseBody errorBody = response.errorBody();
-                    bus.post(new ListEventsAction.OnLoadingError(errorBody.toString(), statusCode));
+                    bus.post(new CreateEventAction.OnLoadingError(errorBody.toString(), statusCode));
                 }
             }
 

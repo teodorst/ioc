@@ -50,8 +50,7 @@ public class EventsActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                switchToCreateEventActivity();
             }
         });
 
@@ -190,6 +189,14 @@ public class EventsActivity extends AppCompatActivity
         return new ArrayList<Event>();
     }
 
+
+    // switch to other activities
+    private void switchToCreateEventActivity() {
+
+        Intent switchToCreateActivity = new Intent(this, CreateEventActivity.class);
+        startActivity(switchToCreateActivity);
+
+    }
 
 
 }

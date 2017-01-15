@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.ioc.evshare.R;
+import com.example.ioc.evshare.network.NetworkManager;
 import com.example.ioc.evshare.network.actionsBus.BusProvider;
 import com.example.ioc.evshare.network.actionsBus.actions.events.CreateEventAction;
 import com.example.ioc.evshare.network.actionsBus.actions.events.message.CreateEventActionMessage;
@@ -27,7 +28,7 @@ public class CreateEventActivity extends AppCompatActivity {
     private EditText eventNameEditText;
     private EditText eventLocationEditText;
     private EditText eventDateEditText;
-
+    private Button createEventButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,14 @@ public class CreateEventActivity extends AppCompatActivity {
         eventNameEditText = (EditText) findViewById(R.id.create_event_name_input);
         eventLocationEditText = (EditText) findViewById(R.id.create_event_location_input);
         eventDateEditText = (EditText) findViewById(R.id.create_event_date_input);
+        createEventButton = (Button) findViewById(R.id.create_event_button);
 
+        createEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createEvent();
+            }
+        });
     }
 
     private void createEvent() {
@@ -48,6 +56,7 @@ public class CreateEventActivity extends AppCompatActivity {
         createEventRequest.setDate(eventDateEditText.getText().toString());
         createEventRequest.setLocation(eventLocationEditText.getText().toString());
         actionMessage.setRequestBody(createEventRequest);
+        Log.d(TAG, "createEvent: Lansez actiunea: " + NetworkManager.getInstance().getToken());
         BusProvider.bus().post(new CreateEventAction.OnLoadingStart(actionMessage));
     }
 
@@ -66,14 +75,14 @@ public class CreateEventActivity extends AppCompatActivity {
 
     @Subscribe
     public void onLoadingSuccesful(CreateEventAction.OnLoadedSuccess response) {
-        Log.d(TAG, "onLoadingSuccessful: " + response.toString());
-        Intent eventActivityIntent = new Intent(this, LoginActivity.class);
+        Log.d(TAG, "onLoadingSuccessful: " + response.getResponse().getId());
+        Intent eventActivityIntent = new Intent(this, EventActivity.class);
         eventActivityIntent.putExtra("eventId", response.getResponse().getId());
         startActivity(eventActivityIntent);
     }
 
     @Subscribe
-    public void onLoadingFailed(CreateUserAction.OnLoadingError response) {
+    public void onLoadingFailed(CreateEventAction.OnLoadingError response) {
         Log.d(TAG, "onLoadingError: " + response.getCode());
     }
 

@@ -110,6 +110,8 @@ public class EventController {
 	
 	private GetEventResponse convertEventToGetEventResponse(Event event) {
 		GetEventResponse response = new GetEventResponse();
+		response.setId(event.getId());
+		response.setId(event.getId());
 		response.setName(event.getName());
 		response.setDate(event.getDate());
 		response.setLocation(event.getLocation());

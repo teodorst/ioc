@@ -13,7 +13,7 @@ function SecurityInterceptor($injector) {
 		var SecurityService = $injector.get('SecurityService', 'SecurityInterceptor');
 
 		if (SecurityService.isAuthenticated()) {
-			config.headers['Auth'] = SecurityService.getToken();
+			config.headers['Authorization'] = SecurityService.getToken();
 		}
 
 		return config;

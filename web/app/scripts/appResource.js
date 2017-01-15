@@ -4,15 +4,8 @@ angular
 	.module('EvShare')
 	.factory('EventResource', ['$resource', 'Constants', function ($resource, Constants) {
 		return $resource('http://46.101.218.125:8080/events', {}, {
-			'query': {
-				method: 'GET',
-				isArray: true,
-				params: {
-					page: '@page',
-					pageSize: '@pageSize',
-					sortBy: '@sortBy',
-					sortOrder: '@sortOrder'
-				}
+			'getEvents': {
+				method: 'GET'
 			},
 			'getEvent': {
 				method: 'GET',
@@ -26,9 +19,13 @@ angular
 				method: 'POST',
 				url: Constants.URL.API + '/event'
 			},
-			'invite': {
+			'inviteFriends': {
 				method: 'POST',
-				url: Constants.URL.API + '/event/:id/invite'
+				url: Constants.URL.API + '/event/:eventId/invite'
+			},
+			'getUsers': {
+				method: 'GET',
+				url: Constants.URL.API + '/users'
 			}
 		});
 	}]);

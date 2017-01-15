@@ -36,22 +36,80 @@ function EvShareController($state, $stateParams, EventService, $mdSidenav, Local
 		{
 			id: 3,
 			name: 'Interval Natural'
+		},
+		{
+			id: 1,
+			name: 'Interval 100 Cluj'
+		},
+		{
+			id: 2,
+			name: 'Interval 100'
+		},
+		{
+			id: 3,
+			name: 'Interval Natural'
+		},
+		{
+			id: 1,
+			name: 'Interval 100 Cluj'
+		},
+		{
+			id: 2,
+			name: 'Interval 100'
+		},
+		{
+			id: 3,
+			name: 'Interval Natural'
+		},
+		{
+			id: 1,
+			name: 'Interval 100 Cluj'
+		},
+		{
+			id: 2,
+			name: 'Interval 100'
+		},
+		{
+			id: 3,
+			name: 'Interval Natural'
 		}];
 
 	// invite friends
-	vm.selectedUser = undefined;
-	vm.user = undefined;
+	var pendingSearch, lastSearch;
+
+	vm.selectedUsers = [];
+	vm.totalUsers = undefined;
 	vm.users = [{firstName: 'Andra', lastName: 'Ionescu', email: 'andra@gmail.com'},
 		{firstName: 'Teodor', lastName: 'Stefu', email: 'tedi@gmail.com'},
 		{firstName: 'Adrian', lastName: 'Tanase', email: 'adi@gmail.com'},
 		{firstName: 'Vlad', lastName: 'Postoaca', email: 'vlad@gmail.com'}];
-	vm.loadContacts = loadContacts;
+	vm.allContacts = _loadContacts();
+
+	vm.searchUser = searchUser;
+	vm.invite = invite;
 
 	//_init();
 
-	function _init() {
-		// LocalStorage.remove(Constants.AUTH.TOKEN);
+	start();
 
+	function start() {
+		LocalStorage.remove(Constants.AUTH.TOKEN);
+	}
+
+	function _init() {
+		EventService.getUsers()
+			.then(function (response) {
+				vm.users = response.listUserResponse;
+				vm.totalUsers = response.count;
+			});
+
+		EventService.getEvents()
+			.then(function (response) {
+				vm.events = response.events;
+				vm.totalEvents = response.totalEvents;
+
+				_loadEvents();
+			})
 	}
 
 	function go(state) {
@@ -79,32 +137,15 @@ function EvShareController($state, $stateParams, EventService, $mdSidenav, Local
 		$mdSidenav('left').toggle();
 	}
 
-
-	var pendingSearch;
-	var lastSearch;
-
-	vm.allContacts = loadContacts();
-	vm.contacts = [vm.allContacts[0]];
-	vm.asyncContacts = [];
-
-	vm.delayedQuerySearch = delayedQuerySearch;
-
-	/**
-	 * Search for contacts; use a random delay to simulate a remote call
-	 */
-	function querySearch(criteria) {
-		return vm.allContacts.filter(createFilterFor(criteria));
+	function _querySearch(criteria) {
+		return vm.allContacts.filter(_createFilterFor(criteria));
 	}
 
-	/**
-	 * Async search for contacts
-	 * Also debounce the queries; since the md-contact-chips does not support this
-	 */
-	function delayedQuerySearch(criteria) {
+	function searchUser(criteria) {
 		if (!pendingSearch || !debounceSearch()) {
 			return pendingSearch = $q(function (resolve) {
 				$timeout(function () {
-					resolve(querySearch(criteria));
+					resolve(_querySearch(criteria));
 					refreshDebounce();
 				}, Math.random() * 500, true)
 			});
@@ -128,10 +169,7 @@ function EvShareController($state, $stateParams, EventService, $mdSidenav, Local
 		return ((now - lastSearch) < 300);
 	}
 
-	/**
-	 * Create filter function for a query string
-	 */
-	function createFilterFor(query) {
+	function _createFilterFor(query) {
 		var lowercaseQuery = angular.lowercase(query);
 
 		return function filterFn(contact) {
@@ -140,7 +178,7 @@ function EvShareController($state, $stateParams, EventService, $mdSidenav, Local
 
 	}
 
-	function loadContacts() {
+	function _loadContacts() {
 		return vm.users.map(function (c) {
 			c.name = c.firstName + ' ' + c.lastName;
 			c._lowername = c.firstName.toLowerCase() + ' ' + c.lastName.toLowerCase();
@@ -148,11 +186,47 @@ function EvShareController($state, $stateParams, EventService, $mdSidenav, Local
 		});
 	}
 
+	function _loadEvents() {
+		return vm.events.map(function (event) {
+			event.selected = false;
+			return event;
+		})
+	}
 
-	/**
-	 Copyright 2016 Google Inc. All Rights Reserved.
-	 Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
-	 **/
+	function _loadEmails() {
+		return vm.selectedUsers.map(function (contact) {
+			return contact['email'];
+		});
+	}
+
+	function _loadEventsId() {
+		return vm.events.filter(function (event) {
+			if (event.selected) {
+				return event['id'];
+			}
+		})
+	}
+
+	function invite() {
+		var events = _loadEventsId();
+
+		events.forEach(function (ev) {
+			EventService.inviteFriends(ev.id, _loadEmails())
+				.then(function (response) {
+					console.log('Success');
+				});
+		});
+
+		vm.selectedUsers = [];
+		_resetEvents();
+	}
+
+	function _resetEvents() {
+		return vm.events.map(function (ev) {
+			ev.selected = false;
+			return ev;
+		})
+	}
 
 	// (function () {
 	// 	'use strict';

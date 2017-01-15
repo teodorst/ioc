@@ -7,7 +7,9 @@ angular
 			createEvent: createEvent,
 			getEvents: getEvents,
 			getEvent: getEvent,
-			updateEvent: updateEvent
+			updateEvent: updateEvent,
+			getUsers: getUsers,
+			inviteFriends: inviteFriends
 		};
 
 		function createEvent(event) {
@@ -23,7 +25,7 @@ angular
 		}
 
 		function getEvents() {
-			return EventResource.query().$promise;
+			return EventResource.getEvents().$promise;
 		}
 
 		function getEvent(id) {
@@ -32,5 +34,13 @@ angular
 
 		function updateEvent(id, event) {
 			return EventResource.updateEvent({id: id}).$promise;
+		}
+
+		function getUsers() {
+			return EventResource.getUsers().$promise;
+		}
+
+		function inviteFriends(eventId, users) {
+			return EventResource.inviteFriends({eventId: eventId}, users).$promise;
 		}
 	}]);

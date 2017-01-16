@@ -67,11 +67,6 @@ public class EventController {
 			throw new Exception("User is not in event!");
 		}
 		
-		List<Long> photosIds = new ArrayList<Long>();
-		for (Photo photo : event.getPhotos()) {
-			photosIds.add(photo.getId());
-		}
-		
 		GetEventResponse response = convertEventToGetEventResponse(event);
 		
 		System.out.println("Principal   " + principal.getName());
@@ -130,10 +125,13 @@ public class EventController {
 	
 	private GetEventResponse convertEventToGetEventResponse(Event event) {
 		List<Long> photosIds = new ArrayList<Long>();
-		for (Photo photo : event.getPhotos()) {
-			photosIds.add(photo.getId());
-		}
 		
+		if (event.getPhotos() != null) {
+			for (Photo photo : event.getPhotos()) {
+				photosIds.add(photo.getId());
+			}
+		}
+				
 		GetEventResponse response = new GetEventResponse();
 		response.setId(event.getId());
 		response.setId(event.getId());

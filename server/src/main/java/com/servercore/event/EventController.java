@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.servercore.exceptions.InvalidRequestException;
+import com.servercore.user.ListUserResponse;
 import com.servercore.user.User;
 import com.servercore.user.UserRepository;
 
@@ -124,4 +125,12 @@ public class EventController {
 		response.setOwnerEmail(event.getOwnerEmail());
 		return response;
 	}
+	
+	@CrossOrigin
+    @RequestMapping(value = "users", method = RequestMethod.GET)
+    public ListUserResponse getUsersByEventId(@PathVariable Long eventId) {
+		
+		Event ev = eventRepository.findById(eventId);
+    	return new ListUserResponse(ev.getUsers());
+    }
 }

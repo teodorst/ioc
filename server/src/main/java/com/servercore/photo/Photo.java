@@ -20,6 +20,9 @@ public class Photo {
 	@Column(name = "PATH")
 	private String photoPath;
 	
+	@Column(name = "THUMBNAIL_PATH")
+	private String photoThumbnailPath;
+	
 	@Column(name = "USEREMAIL")
 	private String userEmail;
 
@@ -37,6 +40,14 @@ public class Photo {
 
 	public void setPhotoPath(String photoPath) {
 		this.photoPath = photoPath;
+	}
+
+	public String getPhotoThumbnailPath() {
+		return photoThumbnailPath;
+	}
+
+	public void setPhotoThumbnailPath(String photoThumbnailPath) {
+		this.photoThumbnailPath = photoThumbnailPath;
 	}
 
 	public String getUserEmail() {

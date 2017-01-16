@@ -69,6 +69,7 @@ public class PhotoController {
 				if (localFilePath != null) {
 					// update the path
 					newPhoto.setPhotoPath(localFilePath);
+					newPhoto.setPhotoThumbnailPath(localFilePath + "_thumbnail");
 					photoRepository.save(newPhoto);
 					// add entry into event_photo table
 					event.getPhotos().add(newPhoto);

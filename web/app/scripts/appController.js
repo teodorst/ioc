@@ -96,12 +96,6 @@ function EvShareController($state, $stateParams, EventService, $mdSidenav, Local
 
 	//_init();
 
-	start();
-
-	function start() {
-		LocalStorage.remove(Constants.AUTH.TOKEN);
-	}
-
 	function _init() {
 		EventService.getUsers()
 			.then(function (response) {

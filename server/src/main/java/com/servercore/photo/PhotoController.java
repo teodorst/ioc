@@ -1,7 +1,11 @@
 package com.servercore.photo;
 
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,6 +15,7 @@ import java.io.InputStream;
 import java.net.URLConnection;
 import java.security.Principal;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,12 +121,13 @@ public class PhotoController {
 	private String writePhotoToLocalMemory(Long eventId, byte[] fileContent, Photo newPhoto) {
 		File eventDirectory = checkEventFolderOrCreateIt(eventId);
 		String path = eventDirectory.getAbsolutePath() + File.separator + "IMG_" + newPhoto.getId();
-		File serverFile = new File(eventDirectory.getAbsolutePath() + File.separator + "IMG_" + newPhoto.getId());
-		BufferedOutputStream stream;
+		String thumbnailPath = eventDirectory.getAbsolutePath() + File.separator + "IMG_" + newPhoto.getId() + "_thumbnail";
+		
 		try {
-			stream = new BufferedOutputStream(new FileOutputStream(serverFile));
-			stream.write(fileContent);
-			stream.close();
+			BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(fileContent));
+			BufferedImage thumbnailImage = getThumbdanilOfPhoto(bufferedImage);
+			ImageIO.write(bufferedImage, "jpg", new File(path));
+			ImageIO.write(thumbnailImage, "jpg", new File(thumbnailPath));
 		} catch (IOException e) {
 			System.out.println("Could not write local file");
 			path = null;
@@ -129,4 +135,19 @@ public class PhotoController {
 		
 		return path;
 	}
+	
+	
+	private BufferedImage getThumbdanilOfPhoto(BufferedImage originalImage) {
+		int w = originalImage.getWidth();
+		int h = originalImage.getHeight();
+		
+		BufferedImage resized = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		AffineTransform at = new AffineTransform();
+		at.scale(2.0, 2.0);
+		AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+		resized = scaleOp.filter(originalImage, resized);
+		
+		return resized;
+	}
+	
 }

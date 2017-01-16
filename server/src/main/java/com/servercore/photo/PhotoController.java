@@ -8,6 +8,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
@@ -95,20 +96,16 @@ public class PhotoController {
 	@RequestMapping(value = "event/{eventId}/photo/{photoId}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public void downloadPhoto(@PathVariable("eventId") Long eventId, @PathVariable("photoId") Long photoId, HttpServletResponse response) throws IOException {
 		
-		Photo photo = photoRepository.findById(photoId);
-		File photoFile = new File(photo.getPhotoPath());
-		String mimeType = URLConnection.guessContentTypeFromName(photoFile.getName());
-        if(mimeType==null){
-            System.out.println("mimetype is not detectable, will take default");
-            mimeType = "application/octet-stream";
-        }
-        
-        response.setContentType(mimeType);
-        response.setHeader("Content-Disposition", String.format("inline; filename=\"" + photoFile.getName() +"\""));
-        response.setContentLength((int)photoFile.length());
-        
-        InputStream inputStream = new BufferedInputStream(new FileInputStream(photoFile));
-        FileCopyUtils.copy(inputStream, response.getOutputStream());
+		downloadFile(photoId, response, false);
+		
+	}
+	
+	
+	@CrossOrigin
+	@RequestMapping(value = "event/{eventId}/thumbnail/{photoId}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public void downloadThumbnail(@PathVariable("eventId") Long eventId, @PathVariable("photoId") Long photoId, HttpServletResponse response) throws IOException {
+		
+		downloadFile(photoId, response, true);
 		
 	}
 	
@@ -217,6 +214,32 @@ public class PhotoController {
 		}
 		
 		return false;
+	}
+	
+	
+	private void downloadFile(Long photoId, HttpServletResponse response, boolean thumbnail) throws IOException {
+		Photo photo = photoRepository.findById(photoId);
+		File photoFile;
+		
+		if (thumbnail) {
+			photoFile = new File(photo.getPhotoThumbnailPath());
+		}
+		else {
+			photoFile = new File(photo.getPhotoPath());
+		}
+		String mimeType = URLConnection.guessContentTypeFromName(photoFile.getName());
+        if(mimeType==null){
+            System.out.println("mimetype is not detectable, will take default");
+            mimeType = "application/octet-stream";
+        }
+        
+        response.setContentType(mimeType);
+        response.setHeader("Content-Disposition", String.format("inline; filename=\"" + photoFile.getName() +"\""));
+        response.setContentLength((int)photoFile.length());
+        
+        InputStream inputStream = new BufferedInputStream(new FileInputStream(photoFile));
+        FileCopyUtils.copy(inputStream, response.getOutputStream());
+		
 	}
 	
 }

@@ -127,8 +127,8 @@ public class EventController {
 	}
 	
 	@CrossOrigin
-    @RequestMapping(value = "users", method = RequestMethod.GET)
-    public ListUserResponse getUsersByEventId(@PathVariable Long eventId) {
+    @RequestMapping(value = "users/{eventId}", method = RequestMethod.GET)
+    public ListUserResponse getUsersByEventId(@PathVariable("eventId") Long eventId) {
 		
 		Event ev = eventRepository.findById(eventId);
     	return new ListUserResponse(ev.getUsers());

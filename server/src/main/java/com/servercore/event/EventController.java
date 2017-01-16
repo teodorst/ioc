@@ -32,8 +32,8 @@ public class EventController {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
-	@CrossOrigin
+
+	@CrossOrigin(origins = "*", allowedHeaders = "Authorization, Content-Type, Accept", methods = "RequestMethod.POST")
 	@RequestMapping(value = "event", method = RequestMethod.POST)
 	public GetEventResponse createEvent(@RequestBody CreateEventRequest request, Principal principal) {
 		

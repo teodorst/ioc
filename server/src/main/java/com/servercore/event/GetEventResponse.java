@@ -1,5 +1,7 @@
 package com.servercore.event;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
 public class GetEventResponse {
@@ -17,6 +19,8 @@ public class GetEventResponse {
 	
 	@NotNull
 	private String ownerEmail;
+	
+	private List<Long> photoIds;
 
 	public Long getId() {
 		return id;
@@ -56,6 +60,14 @@ public class GetEventResponse {
 
 	public void setOwnerEmail(String ownerEmail) {
 		this.ownerEmail = ownerEmail;
+	}
+
+	public List<Long> getPhotoIds() {
+		return photoIds;
+	}
+
+	public void setPhotoIds(List<Long> photoIds) {
+		this.photoIds = photoIds;
 	}
 	
 }

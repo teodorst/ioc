@@ -109,34 +109,6 @@ public class PhotoController {
 		
 	}
 	
-	@CrossOrigin
-	@RequestMapping(value = "event/{eventId}/photos", method = RequestMethod.GET)
-	public ListEventPhotos listPhotosIdsOfEvent(@PathVariable("eventId") Long eventId, Principal principal) throws Exception {
-		List<Long> photosIds = new ArrayList<Long>();
-		
-		// check event exists
-		Event event = eventRepository.findById(eventId);		
-		if (event == null) {
-			throw new Exception("Invalid event id");
-		}
-		
-		// check user it's in event
-		if (!checkUserInEvent(event, principal.getName())) {
-			throw new Exception("User is not in event");
-		}
-		
-		
-		for (Photo photo : event.getPhotos()) {
-			photosIds.add(photo.getId());
-		}
-		
-		ListEventPhotos response = new ListEventPhotos();
-		response.setPhotosIds(photosIds);
-		response.setCount(photosIds.size());
-		return response;
-	}
-	
-	
 	private File checkEventFolderOrCreateIt(Long eventId) {
 		File dir = new File("events_photos/" + eventId);
 		if (!dir.exists()) {
@@ -203,17 +175,6 @@ public class PhotoController {
 		
 		return thumbnailBufferedImage;
 	
-	}
-	
-	private boolean checkUserInEvent(Event event, String userEmail) {
-		
-		for (User eventUser : event.getUsers()) {
-			if (userEmail.equals(eventUser.getEmail())) {
-				return true;
-			}
-		}
-		
-		return false;
 	}
 	
 	

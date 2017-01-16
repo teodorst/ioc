@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.servercore.exceptions.InvalidRequestException;
+import com.servercore.photo.ListEventPhotos;
+import com.servercore.photo.Photo;
 import com.servercore.user.ListUserResponse;
 import com.servercore.user.User;
 import com.servercore.user.UserRepository;
@@ -52,15 +54,31 @@ public class EventController {
 		return newEventResponse;
 	}
 	
+	
 	@CrossOrigin
 	@RequestMapping(value = "event/{eventId}", method = RequestMethod.GET)
-	public GetEventResponse getEvent(@PathVariable Long eventId, Principal principal) {
-		GetEventResponse response = new GetEventResponse();
+	public GetEventResponse getEvent(@PathVariable Long eventId, Principal principal) throws Exception {
 		Event event = eventRepository.findById(eventId);
+		if (event == null) {
+			throw new Exception("Invalid event id");
+		}
+		
+		if (!checkUserInEvent(event, principal.getName())) {
+			throw new Exception("User is not in event!");
+		}
+		
+		List<Long> photosIds = new ArrayList<Long>();
+		for (Photo photo : event.getPhotos()) {
+			photosIds.add(photo.getId());
+		}
+		
+		GetEventResponse response = new GetEventResponse();
 		response.setDate(event.getDate());
 		response.setLocation(event.getLocation());
 		response.setName(event.getName());
 		response.setOwnerEmail(event.getOwnerEmail());
+		response.setPhotoIds(photosIds);
+		
 		System.out.println("Principal   " + principal.getName());
 		return response;
 	}
@@ -133,4 +151,19 @@ public class EventController {
 		Event ev = eventRepository.findById(eventId);
     	return new ListUserResponse(ev.getUsers());
     }
+	
+	
+	
+	private boolean checkUserInEvent(Event event, String userEmail) {
+		
+		for (User eventUser : event.getUsers()) {
+			if (userEmail.equals(eventUser.getEmail())) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	
 }

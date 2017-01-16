@@ -68,6 +68,8 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
                        "/user",
                        "/auth"
                 ).permitAll()
+
+                .antMatchers(HttpMethod.OPTIONS,"/").permitAll()//allow CORS option calls
                 
                 // allow anonymous resource requests
                 .antMatchers(

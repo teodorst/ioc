@@ -72,12 +72,7 @@ public class EventController {
 			photosIds.add(photo.getId());
 		}
 		
-		GetEventResponse response = new GetEventResponse();
-		response.setDate(event.getDate());
-		response.setLocation(event.getLocation());
-		response.setName(event.getName());
-		response.setOwnerEmail(event.getOwnerEmail());
-		response.setPhotoIds(photosIds);
+		GetEventResponse response = convertEventToGetEventResponse(event);
 		
 		System.out.println("Principal   " + principal.getName());
 		return response;
@@ -134,6 +129,11 @@ public class EventController {
 	}
 	
 	private GetEventResponse convertEventToGetEventResponse(Event event) {
+		List<Long> photosIds = new ArrayList<Long>();
+		for (Photo photo : event.getPhotos()) {
+			photosIds.add(photo.getId());
+		}
+		
 		GetEventResponse response = new GetEventResponse();
 		response.setId(event.getId());
 		response.setId(event.getId());
@@ -141,6 +141,9 @@ public class EventController {
 		response.setDate(event.getDate());
 		response.setLocation(event.getLocation());
 		response.setOwnerEmail(event.getOwnerEmail());
+		response.setPhotosIds(photosIds);
+		response.setPhotosCount(photosIds.size());
+		
 		return response;
 	}
 	

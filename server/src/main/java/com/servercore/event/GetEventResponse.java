@@ -20,7 +20,9 @@ public class GetEventResponse {
 	@NotNull
 	private String ownerEmail;
 	
-	private List<Long> photoIds;
+	private List<Long> photosIds;
+	
+	private int photosCount;
 
 	public Long getId() {
 		return id;
@@ -62,12 +64,20 @@ public class GetEventResponse {
 		this.ownerEmail = ownerEmail;
 	}
 
-	public List<Long> getPhotoIds() {
-		return photoIds;
+	public List<Long> getPhotosIds() {
+		return photosIds;
 	}
 
-	public void setPhotoIds(List<Long> photoIds) {
-		this.photoIds = photoIds;
+	public void setPhotosIds(List<Long> photosIds) {
+		this.photosIds = photosIds;
 	}
-	
+
+	public int getPhotosCount() {
+		return photosCount;
+	}
+
+	public void setPhotosCount(int photosCount) {
+		this.photosCount = photosCount;
+	}
+
 }

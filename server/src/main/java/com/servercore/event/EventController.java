@@ -82,7 +82,7 @@ public class EventController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "event/{eventId}/invite")
+	@RequestMapping(value = "event/{eventId}/invite", method = RequestMethod.POST)
 	public void inviteUsersToEvent(@PathVariable Long eventId, @RequestBody EventInviteUsersRequest request) throws InvalidRequestException {
 		validateEventInviteUsersRequest(request);
 		Event event = eventRepository.findById(eventId);

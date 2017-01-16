@@ -1,5 +1,8 @@
 package com.servercore.photo;
 
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -139,16 +142,44 @@ public class PhotoController {
 	
 	
 	private BufferedImage getThumbdanilOfPhoto(BufferedImage originalImage) {
+		int thumbnailWidth = 150;
 		int w = originalImage.getWidth();
 		int h = originalImage.getHeight();
+		int heightToScale, widthToScale;
 		
-		BufferedImage resized = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		AffineTransform at = new AffineTransform();
-		at.scale(2.0, 2.0);
-		AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-		resized = scaleOp.filter(originalImage, resized);
+		if (w > h) {
+			heightToScale = (int)(1.1 * thumbnailWidth);
+			widthToScale = (int)((heightToScale * 1.0) / h * w);
+		}
+		else {
+			widthToScale = (int)(1.1 * thumbnailWidth);
+		    heightToScale = (int)((widthToScale * 1.0) / w * h);
+		}
+
+		BufferedImage resizedImage = new BufferedImage(widthToScale, heightToScale, originalImage.getType());
 		
-		return resized;
+		Graphics2D g = resizedImage.createGraphics();
+		 
+		g.setComposite(AlphaComposite.Src);
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		
+		g.drawImage(originalImage, 0, 0, widthToScale, heightToScale, null);
+		g.dispose();
+
+		int x = (resizedImage.getWidth() - thumbnailWidth) / 2;
+		int y = (resizedImage.getHeight() - thumbnailWidth) / 2;
+		 
+		if (x < 0 || y < 0) {
+		    throw new IllegalArgumentException("Width of new thumbnail is bigger than original image");
+		}
+
+		
+		BufferedImage thumbnailBufferedImage = resizedImage.getSubimage(x, y, thumbnailWidth, thumbnailWidth);
+		
+		return thumbnailBufferedImage;
+	
 	}
 	
 }

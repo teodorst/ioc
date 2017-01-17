@@ -36,9 +36,9 @@ function SecurityController(SecurityService, LocalStorage, Constants, $state) {
 	function register() {
 		return SecurityService.register(vm.registerUser)
 			.then(function () {
-				// goTo('login');
+				goTo('login');
 			})
-			.catch(function (response) {
+			.catch(function () {
 				goTo('login');
 			});
 	}

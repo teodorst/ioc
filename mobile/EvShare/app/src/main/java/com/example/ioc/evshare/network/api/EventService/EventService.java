@@ -37,8 +37,8 @@ public interface EventService {
 
     @Multipart
     @POST("event/{eventId}/photo")
-    Call<Void> uploadPhoto(@Header("Authorization") String token, @Path("eventId") Long eventId, @Part MultipartBody.Part file);
-    
+    Call<ResponseBody> uploadPhoto(@Header("Authorization") String token, @Path("eventId") Long eventId, @Part MultipartBody.Part file);
+
 
     @Headers("Content-Type: application/json")
     @POST("event/{eventId}")

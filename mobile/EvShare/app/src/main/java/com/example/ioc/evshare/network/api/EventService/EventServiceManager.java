@@ -185,7 +185,7 @@ public class EventServiceManager {
 
     @Subscribe void uploadPhoto(UploadPhotoEventAction.OnLoadingStart onLoadingStartMessage) {
         File file = onLoadingStartMessage.getMessage().getImageFile();
-        Log.d(TAG, "uploadPhoto: " + onLoadingStartMessage.getMessage().getEventId());
+        Log.d(TAG, "!!!!!!uploadPhoto: " + onLoadingStartMessage.getMessage().getEventId());
 
         // create RequestBody instance from file
         RequestBody requestFile =
@@ -195,10 +195,11 @@ public class EventServiceManager {
         MultipartBody.Part body =
                 MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-        Call<Void> call = eventServiceAPI.uploadPhoto(token, onLoadingStartMessage.getMessage().getEventId(), body);
-        call.enqueue(new Callback<Void>() {
+        Call<ResponseBody> call = eventServiceAPI.uploadPhoto(token, onLoadingStartMessage.getMessage().getEventId(), body);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.d(TAG, "onResponse DE LA POZA: " + response.code() + " " + response.message());
                 if (response.isSuccessful()) {
                     bus.post(new UploadPhotoEventAction.OnLoadedSuccess());
                 } else {
@@ -209,7 +210,8 @@ public class EventServiceManager {
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable error) {
+            public void onFailure(Call<ResponseBody> call, Throwable error) {
+                Log.d(TAG, "onERROR DE LA POZA: " + error.getMessage());
                 if (error != null && error.getMessage() != null) {
                     bus.post(new UploadPhotoEventAction.OnLoadingError(error.getMessage(), -1));
                 } else {

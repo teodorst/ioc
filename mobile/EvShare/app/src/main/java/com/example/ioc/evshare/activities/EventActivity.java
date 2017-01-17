@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.example.ioc.evshare.R;
 import com.example.ioc.evshare.adapters.EventImagesAdapter;
@@ -30,6 +31,8 @@ import com.example.ioc.evshare.network.actionsBus.actions.events.message.UploadP
 import com.example.ioc.evshare.network.api.EventService.GetEventResponse;
 import com.squareup.otto.Subscribe;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -38,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static android.R.attr.logo;
 import static android.R.attr.path;
 
 public class EventActivity extends AppCompatActivity {
@@ -49,6 +53,7 @@ public class EventActivity extends AppCompatActivity {
     private List<Photo> eventPhotos;
     private Event currentEvent;
     private FloatingActionButton takePhotoButton;
+    private TextView eventName, eventLocation, eventDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +61,6 @@ public class EventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
 
         // get event id
@@ -79,7 +83,9 @@ public class EventActivity extends AppCompatActivity {
         // connect UI
         takePhotoButton = (FloatingActionButton) findViewById(R.id.take_photo_button);
         imagesGridView = (GridView) findViewById(R.id.event_images_grid_view);
-
+        eventName = (TextView) findViewById(R.id.event_name);
+        eventDate = (TextView) findViewById(R.id.event_date);
+        eventLocation = (TextView) findViewById(R.id.event_location);
 
         imagesGridView.setAdapter(new EventImagesAdapter(this, eventPhotos));
         takePhotoButton.setOnClickListener(
@@ -146,6 +152,9 @@ public class EventActivity extends AppCompatActivity {
         Log.d(TAG, "GetEventAction.OnLoadingSuccessful: " + response.getResponse().getId());
         Log.d(TAG, "GetEventAction.OnLoadingSuccessful: " + response.getResponse().getPhotosIds());
         currentEvent = convertGetEventResponseToEvent(response.getResponse());
+        eventName.setText(currentEvent.getName());
+        eventDate.setText(currentEvent.getDate());
+        eventLocation.setText(currentEvent.getLocation());
         getPhotos();
     }
 
@@ -175,6 +184,7 @@ public class EventActivity extends AppCompatActivity {
         newPhoto.setImage(BitmapFactory.decodeByteArray(response.getResponse().getImage() , 0, response.getResponse().getImage().length));
         eventPhotos.add(newPhoto);
         ((BaseAdapter) imagesGridView.getAdapter()).notifyDataSetChanged();
+        Log.d(TAG, "onLoadingSuccesful: event photots" + eventPhotos.size());
     }
 
     @Subscribe
@@ -200,7 +210,8 @@ public class EventActivity extends AppCompatActivity {
 
     public File savePhoto(Bitmap bitmap) {
         File file = null;
-        String path = Environment.getExternalStorageDirectory().toString() + "temp.jpg";
+        String path = Environment.getExternalStorageDirectory().toString() + "/temp.jpg";
+        Log.d(TAG, "savePhoto: PANICA" + path);
         if (bitmap != null) {
             file = new File(path);
             try {
@@ -224,6 +235,9 @@ public class EventActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        if (file == null) {
+            Log.d(TAG, "savePhoto: FISIERUL ESTE NULL");
         }
         return file;
     }

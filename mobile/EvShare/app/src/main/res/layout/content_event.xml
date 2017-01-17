@@ -8,16 +8,5 @@
     tools:context="com.example.ioc.evshare.activities.EventActivity"
     tools:showIn="@layout/activity_event">
 
-    <GridView
-        android:id="@+id/event_images_grid_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnWidth="90dp"
-        android:numColumns="auto_fit"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
-        android:stretchMode="columnWidth"
-        android:gravity="center">
 
-    </GridView>
 </android.support.v4.widget.NestedScrollView>

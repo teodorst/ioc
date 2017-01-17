@@ -4,16 +4,13 @@ angular
 	.module('EvShare')
 	.controller('EvShareController', [
 		'$state',
-		'$stateParams',
 		'EventService',
 		'$mdSidenav',
-		'LocalStorage',
-		'Constants',
 		'$q',
 		'$timeout',
 		EvShareController]);
 
-function EvShareController($state, $stateParams, EventService, $mdSidenav, LocalStorage, Constants, $q, $timeout) {
+function EvShareController($state, EventService, $mdSidenav, $q, $timeout) {
 	var vm = this;
 
 	vm.go = go;
@@ -25,10 +22,11 @@ function EvShareController($state, $stateParams, EventService, $mdSidenav, Local
 	// event
 	vm.selected = undefined;
 	vm.event = {};
-	vm.events = [{
-		id: 1,
-		name: 'Interval 100 Cluj'
-	},
+	vm.events = [
+		{
+			id: 1,
+			name: 'Interval 100 Cluj'
+		},
 		{
 			id: 2,
 			name: 'Interval 100'
@@ -123,8 +121,8 @@ function EvShareController($state, $stateParams, EventService, $mdSidenav, Local
 	function createEvent() {
 		EventService.createEvent(vm.event)
 			.then(function () {
-				// $state.go('home.show');
-				//vm.event = {};
+				$state.go('home.show');
+				vm.event = {};
 			});
 
 		$state.go('home.show');
@@ -161,9 +159,7 @@ function EvShareController($state, $stateParams, EventService, $mdSidenav, Local
 		pendingSearch = null;
 	}
 
-	/**
-	 * Debounce if querying faster than 300ms
-	 */
+	//Debounce if querying faster than 300ms
 	function debounceSearch() {
 		var now = new Date().getMilliseconds();
 		lastSearch = lastSearch || now;
@@ -177,7 +173,6 @@ function EvShareController($state, $stateParams, EventService, $mdSidenav, Local
 		return function filterFn(contact) {
 			return (contact._lowername.indexOf(lowercaseQuery) != -1);
 		};
-
 	}
 
 	function _loadContacts() {

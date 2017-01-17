@@ -2,7 +2,7 @@
 
 angular
 	.module('EvShare')
-	.factory('EventResource', ['$resource', 'Constants', function ($resource, Constants) {
+	.factory('EventResource', ['$resource', 'Constants', 'SecurityService', function ($resource, Constants, SecurityService) {
 		return $resource('http://46.101.218.125:8080/events', {}, {
 			'getEvents': {
 				method: 'GET'
@@ -17,7 +17,12 @@ angular
 			},
 			'createEvent': {
 				method: 'POST',
-				url: Constants.URL.API + '/event'
+				url: Constants.URL.API + '/event',
+				headers: {
+					'Authorization': SecurityService.getToken(),
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
 			},
 			'inviteFriends': {
 				method: 'POST',

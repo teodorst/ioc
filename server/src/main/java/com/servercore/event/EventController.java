@@ -63,10 +63,10 @@ public class EventController {
 			throw new Exception("Invalid event id");
 		}
 		
-		if (!checkUserInEvent(event, principal.getName())) {
-			throw new Exception("User is not in event!");
-		}
-		
+//		if (!checkUserInEvent(event, principal.getName())) {
+//			throw new Exception("User is not in event!");
+//		}
+//		
 		GetEventResponse response = convertEventToGetEventResponse(event);
 		
 		System.out.println("Principal   " + principal.getName());

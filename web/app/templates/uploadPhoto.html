@@ -1,0 +1,31 @@
+<div layout-margin layout-padding>
+	<choose-file layout="row" flex>
+		<input id="fileInput" type="file" class="ng-hide">
+
+		<md-input-container flex class="md-block">
+			<input type="text" ng-model="vm.fileName" disabled>
+		</md-input-container>
+
+		<div>
+			<md-button id="uploadButton" class="md-fab md-primary md-mini">
+				<md-icon md-svg-icon="../pics/attach.svg"></md-icon>
+			</md-button>
+		</div>
+
+		<!--<div>-->
+			<!--<md-button id="deleteButton" class="md-fab md-primary md-mini">-->
+				<!--<md-icon md-svg-icon="../pics/exit.svg"></md-icon>-->
+			<!--</md-button>-->
+		<!--</div>-->
+
+		<div>
+			<md-button id="submitButton" class="md-fab md-primary md-mini">
+				<md-icon md-svg-icon="../pics/submit.svg"></md-icon>
+			</md-button>
+		</div>
+	</choose-file>
+
+	<div layout="column" layout-align="center center">
+		<md-button class="md-raised md-primary" ng-click="vm.go('home.upload')">Back</md-button>
+	</div>
+</div>

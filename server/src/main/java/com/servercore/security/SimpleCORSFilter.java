@@ -30,6 +30,8 @@ public class SimpleCORSFilter implements Filter {
 
 	    response.addHeader("Access-Control-Allow-Origin", "*");
 
+		System.out.println("Request method: " + request.getMethod());
+
 	    if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
 	        response.setHeader("Access-Control-Allow-Methods", "POST,GET,DELETE");
 	        response.setHeader("Access-Control-Max-Age", "3600");

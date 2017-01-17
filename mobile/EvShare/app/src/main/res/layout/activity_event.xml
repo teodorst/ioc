@@ -91,6 +91,15 @@
                 app:srcCompat="@android:drawable/stat_notify_sync_noanim"
                 />
 
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/invite_event"
+                android:layout_width="93dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                app:layout_anchor="@id/app_bar"
+                app:layout_anchorGravity="bottom|end"
+                app:srcCompat="@android:drawable/ic_menu_add"
+                />
         </LinearLayout>
 
 

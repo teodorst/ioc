@@ -5,14 +5,18 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+
+import com.example.ioc.evshare.model.Photo;
 
 import java.util.List;
 
 public class EventImagesAdapter extends BaseAdapter {
     private Context myContext;
-    private List<Bitmap> myThumbnails;
+    private List<Photo> myThumbnails;
 
-    public EventImagesAdapter(Context c, List<Bitmap> thumbnails) {
+    public EventImagesAdapter(Context c, List<Photo> thumbnails) {
         myContext = c;
         myThumbnails = thumbnails;
     }
@@ -31,6 +35,18 @@ public class EventImagesAdapter extends BaseAdapter {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+        ImageView imageView;
+        if (convertView == null) {  // if it's not recycled, initialize some attributes
+            imageView = new ImageView(myContext);
+            imageView.setLayoutParams(new GridView.LayoutParams(300, 300));
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setPadding(8, 8, 8, 8);
+        } else {
+            imageView = (ImageView) convertView;
+        }
+
+        imageView.setImageBitmap(myThumbnails.get(position).getImage());
+        return imageView;
     }
+
 }

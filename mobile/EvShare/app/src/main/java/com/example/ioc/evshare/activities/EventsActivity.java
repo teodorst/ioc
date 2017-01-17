@@ -38,6 +38,8 @@ public class EventsActivity extends AppCompatActivity
 
     private ListView eventsListView;
     private NetworkManager networkManager;
+    private List<Event> events;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,12 +150,13 @@ public class EventsActivity extends AppCompatActivity
 
     private void configureEventsList() {
         // set adapter
-
-        eventsListView.setAdapter(new EventsListAdapter(this, R.layout.events_list_item, getEvents()));
+        events = getEvents();
+        eventsListView.setAdapter(new EventsListAdapter(this, R.layout.events_list_item, events));
         eventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "onItemClick: " + position);
+                switchToEventActivity(events.get(position).getId());
             }
         });
     }
@@ -176,7 +179,7 @@ public class EventsActivity extends AppCompatActivity
 
 
     private Event convertGetEventResponseToEvent(GetEventResponse response) {
-        return new Event(response.getName(), response.getLocation(), response.getDate(), response.getOwnerEmail());
+        return new Event(response.getId(), response.getName(), response.getLocation(), response.getDate(), response.getOwnerEmail(), response.getPhotosIds(), response.getPhotosCount());
     }
 
     private List<Event> getEvents() {
@@ -196,6 +199,12 @@ public class EventsActivity extends AppCompatActivity
         Intent switchToCreateActivity = new Intent(this, CreateEventActivity.class);
         startActivity(switchToCreateActivity);
 
+    }
+
+    private void switchToEventActivity(Long eventId) {
+        Intent switchToEventActivity = new Intent(this, EventActivity.class);
+        switchToEventActivity.putExtra("eventId", eventId);
+        startActivity(switchToEventActivity);
     }
 
 

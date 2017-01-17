@@ -10,6 +10,9 @@ import java.util.List;
 public class GetEventResponse {
 
     @NonNull
+    private Long id;
+
+    @NonNull
     private String name;
 
     @NonNull
@@ -20,6 +23,10 @@ public class GetEventResponse {
 
     @NonNull
     private String ownerEmail;
+
+    private List<Long> photosIds;
+
+    private int photosCount;
 
     public String getName() {
         return name;
@@ -54,5 +61,30 @@ public class GetEventResponse {
 
     public void setOwnerEmail(@NonNull String ownerEmail) {
         this.ownerEmail = ownerEmail;
+    }
+
+    @NonNull
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(@NonNull Long id) {
+        this.id = id;
+    }
+
+    public List<Long> getPhotosIds() {
+        return photosIds;
+    }
+
+    public void setPhotosIds(List<Long> photosIds) {
+        this.photosIds = photosIds;
+    }
+
+    public int getPhotosCount() {
+        return photosCount;
+    }
+
+    public void setPhotosCount(int photosCount) {
+        this.photosCount = photosCount;
     }
 }

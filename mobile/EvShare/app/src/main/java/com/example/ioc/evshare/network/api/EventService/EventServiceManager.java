@@ -1,14 +1,21 @@
 package com.example.ioc.evshare.network.api.EventService;
 
+import android.util.Log;
+
 import com.example.ioc.evshare.network.NetworkManager;
 import com.example.ioc.evshare.network.actionsBus.BusProvider;
 import com.example.ioc.evshare.network.actionsBus.actions.events.CreateEventAction;
+import com.example.ioc.evshare.network.actionsBus.actions.events.GetEventAction;
+import com.example.ioc.evshare.network.actionsBus.actions.events.GetThumbnailAction;
 import com.example.ioc.evshare.network.actionsBus.actions.events.ListEventsAction;
+import com.example.ioc.evshare.network.actionsBus.actions.events.message.ReceiveImageActionMessage;
 import com.example.ioc.evshare.network.actionsBus.actions.user.CreateUserAction;
 import com.example.ioc.evshare.network.api.UserService.UserService;
 import com.example.ioc.evshare.network.api.UserService.UserServiceManager;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+
+import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -101,5 +108,73 @@ public class EventServiceManager {
             }
         });
     }
+
+    @Subscribe void getEvent(GetEventAction.OnLoadingStart onLoadingStartMessage) {
+        Call<GetEventResponse> call = eventServiceAPI.getEvent(networkManager.getToken(), onLoadingStartMessage.getMessage().getId());
+        call.enqueue(new Callback<GetEventResponse>() {
+            @Override
+            public void onResponse(Call<GetEventResponse> call, Response<GetEventResponse> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "onResponse: GUD");
+                    Log.d(TAG, "onResponse: " + response.body().getPhotosIds());
+                    bus.post(new GetEventAction.OnLoadedSuccess(response.body()));
+                } else {
+                    int statusCode = response.code();
+                    ResponseBody errorBody = response.errorBody();
+                    bus.post(new GetEventAction.OnLoadingError(errorBody.toString(), statusCode));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetEventResponse> call, Throwable error) {
+                if (error != null && error.getMessage() != null) {
+                    bus.post(new GetEventAction.OnLoadingError(error.getMessage(), -1));
+                } else {
+                    bus.post(GetEventAction.FAILED_GET_EVENT_ACTION);
+                }
+            }
+        });
+    }
+
+
+    @Subscribe void getThumbnail(final GetThumbnailAction.OnLoadingStart onLoadingStartMessage) {
+        Log.d(TAG, "getThumbnail: ajunge?" + onLoadingStartMessage.getMessage().getEventId());
+        Call<ResponseBody> call = eventServiceAPI.getThumbnail(
+                networkManager.getToken(),
+                onLoadingStartMessage.getMessage().getEventId(),
+                onLoadingStartMessage.getMessage().getPhotoId()
+                );
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.d(TAG, "onResponse: vine poza");
+                if (response.isSuccessful()) {
+                    ReceiveImageActionMessage actionMessage = new ReceiveImageActionMessage();
+                    actionMessage.setImageId(onLoadingStartMessage.getMessage().getPhotoId());
+                    try {
+                        actionMessage.setImage(response.body().bytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    bus.post(new GetThumbnailAction.OnLoadedSuccess(actionMessage));
+                } else {
+                    int statusCode = response.code();
+                    ResponseBody errorBody = response.errorBody();
+                    bus.post(new GetThumbnailAction.OnLoadingError(errorBody.toString(), statusCode));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable error) {
+                if (error != null && error.getMessage() != null) {
+                    bus.post(new GetThumbnailAction.OnLoadingError(error.getMessage(), -1));
+                } else {
+                    bus.post(GetThumbnailAction.FAILED_DOWNLAOD_THUMBNAIL_ACTION);
+                }
+            }
+        });
+    }
+
 
 }

@@ -9,7 +9,7 @@ import com.example.ioc.evshare.network.api.EventService.CreateEventResponse;
 import com.example.ioc.evshare.network.api.EventService.ListEventsResponse;
 
 public class CreateEventAction extends BaseNetworkEvent {
-    public static final ListEventsAction.OnLoadingError FAILED_CREATE_EVENT_ACTION = new ListEventsAction.OnLoadingError(UNHANDLED_MSG, UNHANDLED_CODE);
+    public static final CreateEventAction.OnLoadingError FAILED_CREATE_EVENT_ACTION = new CreateEventAction.OnLoadingError(UNHANDLED_MSG, UNHANDLED_CODE);
 
     public static class OnLoadingStart extends BaseNetworkEvent.OnStart<CreateEventActionMessage> {
         public OnLoadingStart(CreateEventActionMessage message) {

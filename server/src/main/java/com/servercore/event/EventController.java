@@ -77,7 +77,7 @@ public class EventController {
 	@RequestMapping(value = "events", method = RequestMethod.GET)
 	public ListEventsResponse getEvents(Principal principal) {
 		System.out.println("Principal   " + principal.getName());
-		List<Event> eventsFromDB = eventRepository.findByOwnerEmail(principal.getName());
+		List<Event> eventsFromDB = eventRepository.findAll();
 		List<GetEventResponse> events = new ArrayList<>();
 		for (Event event : eventsFromDB) {
 			events.add(convertEventToGetEventResponse(event));

@@ -5,7 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
     <application
@@ -38,7 +39,12 @@
         <activity
             android:name=".activities.CreateEventActivity"
             android:label="@string/title_activity_create_event"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.InviteEventActivity"
+            android:label="@string/title_activity_invite_event"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.ImageActivity"></activity>
     </application>
 
 </manifest>

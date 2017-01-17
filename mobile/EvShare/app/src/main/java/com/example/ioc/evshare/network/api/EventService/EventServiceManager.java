@@ -7,10 +7,13 @@ import com.example.ioc.evshare.network.NetworkManager;
 import com.example.ioc.evshare.network.actionsBus.BusProvider;
 import com.example.ioc.evshare.network.actionsBus.actions.events.CreateEventAction;
 import com.example.ioc.evshare.network.actionsBus.actions.events.GetEventAction;
+import com.example.ioc.evshare.network.actionsBus.actions.events.GetImageAction;
 import com.example.ioc.evshare.network.actionsBus.actions.events.GetThumbnailAction;
+import com.example.ioc.evshare.network.actionsBus.actions.events.InviteEventAction;
 import com.example.ioc.evshare.network.actionsBus.actions.events.ListEventsAction;
 import com.example.ioc.evshare.network.actionsBus.actions.events.UploadPhotoEventAction;
 import com.example.ioc.evshare.network.actionsBus.actions.events.message.ReceiveImageActionMessage;
+import com.example.ioc.evshare.network.actionsBus.actions.events.message.ReceiveImageHDActionMessage;
 import com.example.ioc.evshare.network.actionsBus.actions.user.CreateUserAction;
 import com.example.ioc.evshare.network.api.UserService.UserService;
 import com.example.ioc.evshare.network.api.UserService.UserServiceManager;
@@ -183,6 +186,45 @@ public class EventServiceManager {
     }
 
 
+    @Subscribe void getImage(final GetImageAction.OnLoadingStart onLoadingStartMessage) {
+        Log.d(TAG, "getImage: ajunge?" + onLoadingStartMessage.getMessage().getEventId());
+        Call<ResponseBody> call = eventServiceAPI.getPhoto(
+                networkManager.getToken(),
+                onLoadingStartMessage.getMessage().getEventId(),
+                onLoadingStartMessage.getMessage().getPhotoId()
+        );
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.d(TAG, "onResponse: vine poza");
+                if (response.isSuccessful()) {
+                    ReceiveImageActionMessage actionMessage = new ReceiveImageActionMessage();
+                    actionMessage.setImageId(onLoadingStartMessage.getMessage().getPhotoId());
+                    try {
+                        actionMessage.setImage(response.body().bytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    bus.post(new GetImageAction.OnLoadedSuccess(actionMessage));
+                } else {
+                    int statusCode = response.code();
+                    ResponseBody errorBody = response.errorBody();
+                    bus.post(new GetImageAction.OnLoadingError(errorBody.toString(), statusCode));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable error) {
+                if (error != null && error.getMessage() != null) {
+                    bus.post(new GetImageAction.OnLoadingError(error.getMessage(), -1));
+                } else {
+                    bus.post(GetImageAction.FAILED_DOWNLAOD_IMAGE_ACTION);
+                }
+            }
+        });
+    }
+
     @Subscribe void uploadPhoto(UploadPhotoEventAction.OnLoadingStart onLoadingStartMessage) {
         File file = onLoadingStartMessage.getMessage().getImageFile();
         Log.d(TAG, "!!!!!!uploadPhoto: " + onLoadingStartMessage.getMessage().getEventId());
@@ -220,5 +262,42 @@ public class EventServiceManager {
             }
         });
     }
+
+    @Subscribe void inviteUsers(InviteEventAction.OnLoadingStart onLoadingStartMessage) {
+
+        Call<ResponseBody> call = eventServiceAPI.inviteUsers(
+                token,
+                onLoadingStartMessage.getMessage().getEventId(),
+                onLoadingStartMessage.getMessage().getRequest()
+        );
+
+
+        Log.d(TAG, "inviteUsers: ajunge aici " +  onLoadingStartMessage.getMessage().getEventId() + "   " + onLoadingStartMessage.getMessage().getRequest().getUserEmails());
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    bus.post(new InviteEventAction.OnLoadedSuccess());
+                } else {
+                    int statusCode = response.code();
+                    ResponseBody errorBody = response.errorBody();
+                    bus.post(new UploadPhotoEventAction.OnLoadingError(errorBody.toString(), statusCode));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable error) {
+                Log.d(TAG, "onERROR DE LA POZA: " + error.getMessage());
+                if (error != null && error.getMessage() != null) {
+                    bus.post(new InviteEventAction.OnLoadingError(error.getMessage(), -1));
+                } else {
+                    bus.post(InviteEventAction.FAILED_INVITE_ACTION);
+                }
+            }
+        });
+    }
+
+
+
 
 }

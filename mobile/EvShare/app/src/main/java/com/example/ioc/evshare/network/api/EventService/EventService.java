@@ -32,12 +32,16 @@ public interface EventService {
 
 
     @GET("event/{eventId}/photo/{photoId}")
-    Call<byte[]> getPhoto(@Header("Authorization") String token, @Path("eventId") Long eventId, @Path("photoId") Long photoId);
+    Call<ResponseBody> getPhoto(@Header("Authorization") String token, @Path("eventId") Long eventId, @Path("photoId") Long photoId);
 
 
     @Multipart
     @POST("event/{eventId}/photo")
     Call<ResponseBody> uploadPhoto(@Header("Authorization") String token, @Path("eventId") Long eventId, @Part MultipartBody.Part file);
+
+
+    @POST("event/{eventId}/invite")
+    Call<ResponseBody> inviteUsers(@Header("Authorization") String token, @Path("eventId") Long eventId, @Body InviteEventRequest request);
 
 
     @Headers("Content-Type: application/json")

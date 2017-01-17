@@ -45,14 +45,14 @@ import static android.R.attr.logo;
 import static android.R.attr.path;
 
 public class EventActivity extends AppCompatActivity {
-    private static final String TAG = "CreateUserActivity";
+    private static final String TAG = "EventActivity";
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private Long eventId;
     private GridView imagesGridView;
     private List<Photo> eventPhotos;
     private Event currentEvent;
-    private FloatingActionButton takePhotoButton;
+    private FloatingActionButton takePhotoButton, inviteButton, syncButton;
     private TextView eventName, eventLocation, eventDate;
 
     @Override
@@ -82,6 +82,9 @@ public class EventActivity extends AppCompatActivity {
 
         // connect UI
         takePhotoButton = (FloatingActionButton) findViewById(R.id.take_photo_button);
+        inviteButton = (FloatingActionButton) findViewById(R.id.invite_event);
+        syncButton = (FloatingActionButton) findViewById(R.id.sync_event);
+
         imagesGridView = (GridView) findViewById(R.id.event_images_grid_view);
         eventName = (TextView) findViewById(R.id.event_name);
         eventDate = (TextView) findViewById(R.id.event_date);
@@ -97,10 +100,31 @@ public class EventActivity extends AppCompatActivity {
                 }
         );
 
+
+        syncButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        eventPhotos.clear();
+                        getEvent();
+                    }
+                }
+        );
+
+        inviteButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        switchToInvite();
+                    }
+                }
+        );
+
         imagesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d(TAG, "onItemClick: " + i + " " + l);
+                switchToPhoto(i);
             }
         });
 
@@ -149,9 +173,8 @@ public class EventActivity extends AppCompatActivity {
 
     @Subscribe
     public void onLoadingSuccesful(GetEventAction.OnLoadedSuccess response) {
-        Log.d(TAG, "GetEventAction.OnLoadingSuccessful: " + response.getResponse().getId());
-        Log.d(TAG, "GetEventAction.OnLoadingSuccessful: " + response.getResponse().getPhotosIds());
         currentEvent = convertGetEventResponseToEvent(response.getResponse());
+        Log.d(TAG, "onLoadingSuccesful: " + currentEvent.getName());
         eventName.setText(currentEvent.getName());
         eventDate.setText(currentEvent.getDate());
         eventLocation.setText(currentEvent.getLocation());
@@ -248,6 +271,24 @@ public class EventActivity extends AppCompatActivity {
         message.setImageFile(file);
         Log.d(TAG, "sendPhoto: CE CACAT?" + eventId);
         BusProvider.bus().post(new UploadPhotoEventAction.OnLoadingStart(message));
+    }
+
+
+
+    public void switchToInvite() {
+        Intent intent = new Intent(this, InviteEventActivity.class);
+        intent.putExtra("eventId", eventId);
+        startActivity(intent);
+    }
+
+    public void switchToPhoto(int pos) {
+
+        Photo photo = eventPhotos.get(pos);
+        Intent intent = new Intent(this, ImageActivity.class);
+        intent.putExtra("eventId", eventId);
+        intent.putExtra("photoId", eventPhotos.get(pos).getId());
+        Log.d(TAG, "switchToPhoto: " + eventId + " " + eventPhotos.get(pos).getId());
+        startActivity(intent);
     }
 
 }

@@ -16,50 +16,62 @@
         <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="68dp"
+            android:layout_height="168dp"
             android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.design.widget.CollapsingToolbarLayout
                 android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
-                android:layout_height="63dp"
+                android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
-                    app:popupTheme="@style/AppTheme.PopupOverlay" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    >
+                    android:layout_height="180dp"
+                    android:orientation="vertical">
+
 
                     <TextView
                         android:id="@+id/event_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Name1"
+                        android:textColor="#ff4081"
+                        android:textSize="30dip"
+                        android:paddingBottom="8dp"
+                        android:textStyle="italic"
                         />
                     <TextView
                         android:id="@+id/event_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Name2"
+                        android:textColor="#ff4081"
+                        android:textSize="30dip"
+                        android:paddingBottom="8dp"
+                    android:textStyle="italic"
                         />
                     <TextView
                         android:id="@+id/event_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Name3"
+                        android:textColor="#ff4081"
+                        android:textSize="30dip"
+                        android:paddingBottom="8dp"
+                    android:textStyle="italic"
                         />
                 </LinearLayout>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" />
 
 
             </android.support.design.widget.CollapsingToolbarLayout>
@@ -91,15 +103,6 @@
                 app:srcCompat="@android:drawable/stat_notify_sync_noanim"
                 />
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/invite_event"
-                android:layout_width="93dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
-                app:layout_anchor="@id/app_bar"
-                app:layout_anchorGravity="bottom|end"
-                app:srcCompat="@android:drawable/ic_menu_add"
-                />
         </LinearLayout>
 
 
@@ -107,7 +110,7 @@
         <GridView
             android:id="@+id/event_images_grid_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:columnWidth="90dp"
             android:numColumns="auto_fit"
             android:verticalSpacing="10dp"

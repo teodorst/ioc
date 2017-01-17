@@ -10,48 +10,42 @@ angular
 		'ngMaterial'
 	])
 
-	.config(['$httpProvider',
-		function ($httpProvider) {
-			$httpProvider.defaults.headers.common.Accept = 'application/json';
-			$httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
-			// $httpProvider.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-			// $httpProvider.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PATCH, PUT, DELETE, OPTIONS';
-			// $httpProvider.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token';
-		}])
+	// .config(['$httpProvider',
+	// 	function ($httpProvider) {
+	// 		$httpProvider.defaults.headers.common.Accept = 'application/json';
+	// 		$httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
+	// 	}])
+	//
+	// .config(['$httpProvider', function ($httpProvider) {
+	// 	$httpProvider.interceptors.push('SecurityInterceptor');
+	// }])
 
-	.config(['$httpProvider', function ($httpProvider) {
-		$httpProvider.interceptors.push('SecurityInterceptor');
-	}])
+	.config(['$urlRouterProvider', function navInterceptorConfig($urlRouterProvider) {
+		$urlRouterProvider
+			.when('/login', [
+				'$state',
+				'$injector',
+				function ($state, $injector) {
+					var SecurityService = $injector.get('SecurityService');
 
-	.config([
-		'$urlRouterProvider',
-		function navInterceptorConfig($urlRouterProvider) {
-			$urlRouterProvider
-				.when('/login', [
-					'$state',
-					'$injector',
-					function ($state, $injector) {
-						var SecurityService = $injector.get('SecurityService');
-
-						// if already in login state and trying to reach again `/login`
-						// don't do a redirection
-						// *because it will enter in an infinite loop
-						if ($state.$current.name === 'login') {
-							return true;
-						}
-
-						// if already authenticated and trying to reach `/login`
-						if (SecurityService.isAuthenticated()) {
-							return '/home/show';
-						}
-
-						return false;
+					// if already in login state and trying to reach again `/login`
+					// don't do a redirection because it will enter in an infinite loop
+					if ($state.$current.name === 'login') {
+						return true;
 					}
-				])
-				.otherwise(function () {
-					return '/login';
-				});
-		}
+
+					// if already authenticated and trying to reach `/login`
+					if (SecurityService.isAuthenticated()) {
+						return '/home/show';
+					}
+
+					return false;
+				}
+			])
+			.otherwise(function () {
+				return '/login';
+			});
+	}
 	])
 
 	.config([
@@ -117,7 +111,7 @@ angular
 			API: 'http://46.101.218.125:8080'
 		},
 		AUTH: {
-			TOKEN: 'Auth'
+			TOKEN: 'Authorization'
 		}
 	});
 

@@ -54,10 +54,10 @@ public class PhotoController {
 		if (event == null) {
 			throw new Exception("Event doesn't exists");
 		}
-		
+		System.out.println("============New Photo==========");
+
 		if (!file.isEmpty()) {
 			try {
-				System.out.println("============New Photo==========");
 				//create Photo entry in db
 				Photo newPhoto = new Photo();
 				newPhoto.setPhotoPath("/tmp"); // poate il scoatem

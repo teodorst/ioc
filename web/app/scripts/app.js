@@ -36,7 +36,7 @@ angular
 
 					// if already authenticated and trying to reach `/login`
 					if (SecurityService.isAuthenticated()) {
-						return '/home/show';
+
 					}
 
 					return false;

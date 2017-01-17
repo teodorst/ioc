@@ -19,7 +19,7 @@ angular
 				method: 'POST',
 				url: Constants.URL.API + '/event',
 				headers: {
-					'X-Auth-Token': SecurityService.getToken(),
+					'Authorization': SecurityService.getToken(),
 					'Content-Type': 'application/json',
 					'Accept': 'application/json'
 				}

@@ -1,5 +1,6 @@
 package com.example.ioc.evshare.network.api.EventService;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.example.ioc.evshare.network.NetworkManager;
@@ -8,6 +9,7 @@ import com.example.ioc.evshare.network.actionsBus.actions.events.CreateEventActi
 import com.example.ioc.evshare.network.actionsBus.actions.events.GetEventAction;
 import com.example.ioc.evshare.network.actionsBus.actions.events.GetThumbnailAction;
 import com.example.ioc.evshare.network.actionsBus.actions.events.ListEventsAction;
+import com.example.ioc.evshare.network.actionsBus.actions.events.UploadPhotoEventAction;
 import com.example.ioc.evshare.network.actionsBus.actions.events.message.ReceiveImageActionMessage;
 import com.example.ioc.evshare.network.actionsBus.actions.user.CreateUserAction;
 import com.example.ioc.evshare.network.api.UserService.UserService;
@@ -15,8 +17,12 @@ import com.example.ioc.evshare.network.api.UserService.UserServiceManager;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import java.io.File;
 import java.io.IOException;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -176,5 +182,41 @@ public class EventServiceManager {
         });
     }
 
+
+    @Subscribe void uploadPhoto(UploadPhotoEventAction.OnLoadingStart onLoadingStartMessage) {
+        File file = onLoadingStartMessage.getMessage().getImageFile();
+        Log.d(TAG, "uploadPhoto: " + onLoadingStartMessage.getMessage().getEventId());
+
+        // create RequestBody instance from file
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), onLoadingStartMessage.getMessage().getImageFile());
+
+        // MultipartBody.Part is used to send also the actual file name
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+
+        Call<Void> call = eventServiceAPI.uploadPhoto(token, onLoadingStartMessage.getMessage().getEventId(), body);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    bus.post(new UploadPhotoEventAction.OnLoadedSuccess());
+                } else {
+                    int statusCode = response.code();
+                    ResponseBody errorBody = response.errorBody();
+                    bus.post(new UploadPhotoEventAction.OnLoadingError(errorBody.toString(), statusCode));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable error) {
+                if (error != null && error.getMessage() != null) {
+                    bus.post(new UploadPhotoEventAction.OnLoadingError(error.getMessage(), -1));
+                } else {
+                    bus.post(UploadPhotoEventAction.FAILED_UPLOAD_PHOTO_ACTION);
+                }
+            }
+        });
+    }
 
 }

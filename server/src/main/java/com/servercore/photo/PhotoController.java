@@ -57,7 +57,7 @@ public class PhotoController {
 		
 		if (!file.isEmpty()) {
 			try {
-				
+				System.out.println("============New Photo==========");
 				//create Photo entry in db
 				Photo newPhoto = new Photo();
 				newPhoto.setPhotoPath("/tmp"); // poate il scoatem

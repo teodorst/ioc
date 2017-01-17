@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -22,14 +23,22 @@ import com.example.ioc.evshare.model.Photo;
 import com.example.ioc.evshare.network.actionsBus.BusProvider;
 import com.example.ioc.evshare.network.actionsBus.actions.events.GetThumbnailAction;
 import com.example.ioc.evshare.network.actionsBus.actions.events.GetEventAction;
+import com.example.ioc.evshare.network.actionsBus.actions.events.UploadPhotoEventAction;
 import com.example.ioc.evshare.network.actionsBus.actions.events.message.GetThumbnailActionMessage;
 import com.example.ioc.evshare.network.actionsBus.actions.events.message.GetEventActionMessage;
+import com.example.ioc.evshare.network.actionsBus.actions.events.message.UploadPhotoEventActionMessage;
 import com.example.ioc.evshare.network.api.EventService.GetEventResponse;
 import com.squareup.otto.Subscribe;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static android.R.attr.path;
 
 public class EventActivity extends AppCompatActivity {
     private static final String TAG = "CreateUserActivity";
@@ -184,7 +193,47 @@ public class EventActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             Log.d(TAG, "onActivityResult: GOT IMAGE" + imageBitmap.getByteCount());
-            
+            sendPhoto(eventId, savePhoto(imageBitmap));
         }
     }
+
+
+    public File savePhoto(Bitmap bitmap) {
+        File file = null;
+        String path = Environment.getExternalStorageDirectory().toString() + "temp.jpg";
+        if (bitmap != null) {
+            file = new File(path);
+            try {
+                FileOutputStream outputStream = null;
+                try {
+                    outputStream = new FileOutputStream(path); //here is set your file path where you want to save or also here you can set file object directly
+
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream); // bitmap is your Bitmap instance, if you want to compress it you can compress reduce percentage
+                    // PNG is a lossless format, the compression factor (100) is ignored
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (outputStream != null) {
+                            outputStream.close();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return file;
+    }
+
+    public void sendPhoto(long eventId, File file) {
+        UploadPhotoEventActionMessage message = new UploadPhotoEventActionMessage();
+        message.setEventId(eventId);
+        message.setImageFile(file);
+        Log.d(TAG, "sendPhoto: CE CACAT?" + eventId);
+        BusProvider.bus().post(new UploadPhotoEventAction.OnLoadingStart(message));
+    }
+
 }
